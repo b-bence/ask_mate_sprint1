@@ -11,8 +11,9 @@ def main_page():
 
 @app.route("/list")
 def list():
+    questions = data_handler.get_questions()
     table_headers = data_handler.question_table_headers
-    return render_template('list.html', table_headers=table_headers)
+    return render_template('list.html', table_headers=table_headers, questions=questions)
 
 
 if __name__ == "__main__":

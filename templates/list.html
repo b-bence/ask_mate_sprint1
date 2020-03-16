@@ -13,6 +13,13 @@
             <th> {{ header }} </th>
             {% endfor %}
         </tr>
+        {% for row in questions%}
+        <tr align="center">
+            {% for header in row %}
+                    <td>{{ row[header] }}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
     </table>
 </body>
 </html>
