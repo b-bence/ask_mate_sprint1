@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Question page</title>
+</head>
+<body>
+    <h1>Question list</h1><br>
+    <table cellpadding="5">
+        <tr align="center">
+            <th> Question  </th>
+            <th> Question message  </th>
+            <th> Answer  </th>
+        </tr>
+        <tr align="center">
+                <td>{{ question_data['title'] }}</td>
+                <td>{{ question_data['message'] }}</td>
+                {% if answer_data == 'No answer yet' %}
+                <td>No answer yet</td>
+                {% else %}
+                <td>{{ answer_data['message'] }}</td>
+                {% endif %}
+        </tr>
+    </table>
+    <a href="/"> Return to main page</a>
+</body>
+</html>
+
+
+{#{%extends "list.html"%}#}
+{#{% block answer %}#}
+{#    {% for row in answers%}#}
+{#        <tr align="center">#}
+{#            {% for element in row %}#}
+{#                    <td>{{ row[element] }}</td>#}
+{#            {% endfor %}#}
+{#        </tr>#}
+{#    {% endfor %}#}
+{#{% endblock %}#}

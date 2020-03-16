@@ -6,7 +6,6 @@
 </head>
 <body>
     <h1>Question list</h1><br>
-
     <table cellpadding="5">
         <tr align="center">
             {% for header in table_headers%}
@@ -15,11 +14,16 @@
         </tr>
         {% for row in questions%}
         <tr align="center">
-            {% for header in row %}
-                    <td>{{ row[header] }}</td>
+            {% for element in row %}
+                {% if element=="title" %}
+                    <td><a href='/question/{{ row["id"] }}'>{{ row[element] }}</a></td>
+                {% else %}
+                    <td>{{ row[element] }}</td>
+                {% endif %}
             {% endfor %}
         </tr>
         {% endfor %}
     </table>
+    <a href="/"> Return to main page</a>
 </body>
 </html>
