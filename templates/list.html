@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Question page</title>
+</head>
+<body>
+    <h1>Question list</h1><br>
+
+    <table cellpadding="5">
+        <tr align="center">
+            {% for header in table_headers%}
+            <th> {{ header }} </th>
+            {% endfor %}
+        </tr>
+    </table>
+</body>
+</html>
