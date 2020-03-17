@@ -37,11 +37,17 @@ def add_question():
 def id(question_id):
     row_num = 0
     questions = data_handler.get_questions()
-    answers=data_handler.get_answers(question_id)
+    answers = data_handler.get_answers(question_id)
     for index, row in enumerate(questions):
         if row['id'] == question_id:
             row_num = index
     question_data = questions[row_num]
+
+    if request.method == 'GET':
+        csv_question_headers = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
+        questions[row_num]['view_number'] = int(question_data['view_number']) + 1
+        data_handler.update_view_number(questions)
+
     return render_template('display_question.html', question_id=question_id, question_data=question_data, answer_data=answers)
 
 

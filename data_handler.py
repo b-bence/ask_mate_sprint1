@@ -39,3 +39,12 @@ def get_answers(id):
         csv_reader = csv.DictReader(csv_file)
         answers = [answer for answer in csv_reader if answer['question_id']==str(id)]
     return answers
+
+
+def update_view_number(lst):
+    with open('questions.csv', 'w') as new_file:
+        fieldnames = csv_question_headers
+        csv_writer = csv.DictWriter(new_file, fieldnames=fieldnames)
+        csv_writer.writeheader()
+        for row in lst:
+            csv_writer.writerow(row)
