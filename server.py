@@ -20,7 +20,7 @@ def list():
 def add_question():
     if request.method == 'POST':
         id = data_handler.generate_question_id()
-        submission = 'None'
+        submission = data_handler.today_date()
         view = 0
         vote = 0
         title = request.form['title']
@@ -38,18 +38,14 @@ def id(question_id):
     row_num = 0
     table_headers = data_handler.question_table_headers
     questions = data_handler.get_questions()
-    answers=data_handler.get_answers()
+    answers=data_handler.get_answers(question_id)
     for index, row in enumerate(questions):
         if row['id'] == question_id:
             row_num = index
     question_data = questions[row_num]
-    try:
-        answer_data = answers[row_num]
-    except IndexError:
-        answer_data = "No answer yet"
 
     return render_template('display_question.html'
-                           , question_data=question_data, answer_data=answer_data, table_headers=table_headers)
+                           , question_data=question_data, answer_data=answers, table_headers=table_headers)
 
 
 if __name__ == "__main__":

@@ -10,18 +10,26 @@
         <tr align="center">
             <th> Question  </th>
             <th> Question message  </th>
-            <th> Answer  </th>
         </tr>
         <tr align="center">
                 <td>{{ question_data['title'] }}</td>
                 <td>{{ question_data['message'] }}</td>
-                {% if answer_data == 'No answer yet' %}
-                <td>No answer yet</td>
-                {% else %}
-                <td>{{ answer_data['message'] }}</td>
-                {% endif %}
         </tr>
     </table>
+    <br>
+    <table cellpadding="5">
+        {% for answer in answer_data %}
+        <tr>
+           <th> Answer: </th>
+                {% if answer_data == '' %}
+                <td>No answer yet</td>
+                {% else %}
+                <td>{{ answer['message'] }}</td>
+                {% endif %}
+        </tr>
+        {% endfor %}
+    </table>
+    <br>
     <a href="/"> Return to main page</a>
 </body>
 </html>

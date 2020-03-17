@@ -1,8 +1,13 @@
 import csv
+from datetime import date
 csv_question_headers = ['id','submission_time','view_number','vote_number','title','message', 'image']
 csv_answer_headers = ['id','submission_time','vote_number', 'question_id','message','image']
 
 question_table_headers = ['ID', 'Submission time', 'View number', 'Vote number', 'Title', 'Message', 'Image']
+
+
+def today_date():
+    return date.today()
 
 
 def get_questions():
@@ -28,10 +33,11 @@ def write_question_data(lst):
         wr.writerow(lst)
 
 
-def get_answers():
+def get_answers(id):
     with open('answers.csv', 'r') as csv_file:
         csv_reader = csv.DictReader(csv_file)
-        lst = [x for x in csv_reader]
-    return lst
+        answers = [answer for answer in csv_reader if answer['id']==str(id)]
+    return answers
 
 
+print(get_answers(1))
