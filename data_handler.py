@@ -1,13 +1,14 @@
 import csv
-from datetime import date
+from datetime import datetime
 csv_question_headers = ['id','submission_time','view_number','vote_number','title','message', 'image']
 csv_answer_headers = ['id','submission_time','vote_number', 'question_id','message','image']
 
 question_table_headers = ['ID', 'Submission time', 'View number', 'Vote number', 'Title', 'Message', 'Image']
 
 
-def today_date():
-    return date.today()
+def current_time():
+    now = datetime.now()
+    return now.strftime("%Y-%m-%d %H:%M:%S")
 
 
 def get_questions():
@@ -17,9 +18,9 @@ def get_questions():
     return lst
 
 
-def generate_question_id():
+def generate_new_id(filename):
     max_id = 0
-    with open('questions.csv', 'r') as csv_file:
+    with open(filename, 'r') as csv_file:
         csv_reader = csv.DictReader(csv_file)
         for i in csv_reader:
             if int(i['id']) >= max_id:
@@ -27,8 +28,8 @@ def generate_question_id():
     return max_id
 
 
-def write_question_data(lst):
-    with open('questions.csv', 'a') as file:
+def write_new_data(lst, filename):
+    with open(filename, 'a') as file:
         wr = csv.writer(file)
         wr.writerow(lst)
 
@@ -36,8 +37,5 @@ def write_question_data(lst):
 def get_answers(id):
     with open('answers.csv', 'r') as csv_file:
         csv_reader = csv.DictReader(csv_file)
-        answers = [answer for answer in csv_reader if answer['id']==str(id)]
+        answers = [answer for answer in csv_reader if answer['question_id']==str(id)]
     return answers
-
-
-print(get_answers(1))

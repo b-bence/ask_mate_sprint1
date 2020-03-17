@@ -18,30 +18,24 @@
     </table>
     <br>
     <table cellpadding="5">
+        {% if answer_data==[] %}
+            <tr>
+           <th> Answer: </th>
+                <td>No answer yet</td>
+            </tr>
+        {% endif %}
         {% for answer in answer_data %}
         <tr>
            <th> Answer: </th>
-                {% if answer_data == '' %}
-                <td>No answer yet</td>
-                {% else %}
                 <td>{{ answer['message'] }}</td>
-                {% endif %}
         </tr>
         {% endfor %}
     </table>
     <br>
+    <form action="/question/{{question_id}}/new-answer">
+        <input type="submit" value="Add an answer" />
+    </form>
+
     <a href="/"> Return to main page</a>
 </body>
 </html>
-
-
-{#{%extends "list.html"%}#}
-{#{% block answer %}#}
-{#    {% for row in answers%}#}
-{#        <tr align="center">#}
-{#            {% for element in row %}#}
-{#                    <td>{{ row[element] }}</td>#}
-{#            {% endfor %}#}
-{#        </tr>#}
-{#    {% endfor %}#}
-{#{% endblock %}#}

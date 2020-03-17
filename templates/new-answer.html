@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add answer</title>
+</head>
+<body>
+    <h1>Add answer for: {{ question_data['title'] }}</h1>
+    <h3>Message for the question: {{ question_data['message'] }}</h3><br>
+
+    <form action="/question/{{question_id}}/new-answer" method="POST">
+
+    <label for="answer">What is your answer for this question?</label><br>
+    <textarea id="answer" name="answer" rows="5" cols="30"></textarea><br><br>
+
+        <button type="submit">Add your answer</button>
+
+    </form>
+</body>
+</html>
