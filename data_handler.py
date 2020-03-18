@@ -12,8 +12,15 @@ def current_time():
     return now.strftime("%Y-%m-%d %H:%M:%S")
 
 
-def get_questions():
+def get_questions_data():
     with open('questions.csv', 'r') as csv_file:
+        csv_reader = csv.DictReader(csv_file)
+        lst = [x for x in csv_reader]
+    return lst
+
+
+def get_answers_data():
+    with open('answers.csv', 'r') as csv_file:
         csv_reader = csv.DictReader(csv_file)
         lst = [x for x in csv_reader]
     return lst
@@ -42,7 +49,7 @@ def get_answers(id):
     return answers
 
 
-def update_view_number(lst):
+def update_question_view_number(lst):
     with open('questions.csv', 'w') as new_file:
         fieldnames = csv_question_headers
         csv_writer = csv.DictWriter(new_file, fieldnames=fieldnames)
@@ -51,8 +58,44 @@ def update_view_number(lst):
             csv_writer.writerow(row)
 
 
+def update_answer_view_number(lst):
+    with open('answers.csv', 'w') as new_file:
+        fieldnames = csv_answer_headers
+        csv_writer = csv.DictWriter(new_file, fieldnames=fieldnames)
+        csv_writer.writeheader()
+        for row in lst:
+            csv_writer.writerow(row)
+
+
+def change_question_vote_count(id, num):
+    dataset = get_questions_data()
+    row_num = get_row(id, dataset)
+    question_data = dataset[row_num]
+    dataset[row_num]['vote_number'] = int(question_data['vote_number']) + num
+    update_question_view_number(dataset)
+    return dataset
+
+
+def change_answer_vote_count(id, num):
+    dataset = get_answers_data()
+    row_num = get_row(id, dataset)
+    answer_data = dataset[row_num]
+    dataset[row_num]['vote_number'] = int(answer_data['vote_number']) + num
+    update_answer_view_number(dataset)
+    return dataset
+
+
+def get_row(id, lst):
+    row_num = 0
+    for index, row in enumerate(lst):
+        if row['id'] == id:
+            row_num = index
+    return row_num
+
+
 def sort_by(questions, header, direction):
     reverse = False
     if direction == 'desc':
         reverse = True
     return sorted(questions, key=itemgetter(header), reverse=reverse)
+

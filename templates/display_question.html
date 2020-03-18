@@ -28,6 +28,16 @@
         <tr>
            <th> Answer: </th>
                 <td>{{ answer['message'] }}</td>
+
+                <td>&emsp;&emsp;&emsp;&emsp;Vote number:&emsp;&emsp;{{ answer['vote_number'] }}</td>
+
+                <form action="/answer/{{answer["id"]}}/vote_up">
+                    <td>&emsp;&emsp;<input type="submit" value="vote up"/></td>
+                </form>
+
+                <form action="/answer/{{answer["id"]}}/vote_down">
+                    <td><input type="submit" value="vote down"/></td>
+                </form>
         </tr>
         {% endfor %}
     </table>
@@ -38,7 +48,6 @@
     <form action="/question/{{question_id}}/delete">
         <input type="submit" value="Delete question" />
     </form>
-
     <a href="/"> Return to main page</a>
 </body>
 </html>
