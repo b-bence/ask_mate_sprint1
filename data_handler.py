@@ -1,5 +1,6 @@
 import csv
 from datetime import datetime
+from operator import itemgetter
 csv_question_headers = ['id','submission_time','view_number','vote_number','title','message', 'image']
 csv_answer_headers = ['id','submission_time','vote_number', 'question_id','message','image']
 
@@ -48,3 +49,10 @@ def update_view_number(lst):
         csv_writer.writeheader()
         for row in lst:
             csv_writer.writerow(row)
+
+
+def sort_by(questions, header, direction):
+    reverse = False
+    if direction == 'desc':
+        reverse = True
+    return sorted(questions, key=itemgetter(header), reverse=reverse)

@@ -10,10 +10,15 @@ def main_page():
 
 
 @app.route("/list")
-def list():
+@app.route("/list<header>&<direction>")
+def list(header=None, direction=None):
     questions = data_handler.get_questions()
     table_headers = data_handler.question_table_headers
-    return render_template('list.html', table_headers=table_headers, questions=questions)
+    if header not in data_handler.csv_question_headers or direction not in ['asc', 'desc']:
+        return render_template('list.html', table_headers=table_headers, questions=questions)
+    else:
+        sorted_questions = data_handler.sort_by(questions, header, direction)
+        return render_template('list.html', table_headers=table_headers, questions=sorted_questions)
 
 
 @app.route("/add-question", methods=['GET', 'POST'])
@@ -23,8 +28,8 @@ def add_question():
         submission = data_handler.current_time()
         view = 0
         vote = 0
-        title = request.form['title']
-        message = request.form['message']
+        title = request.form['title'].capitalize()
+        message = request.form['message'].capitalize()
         data = [id, submission, view, vote, title, message]
 
         data_handler.write_new_data(data, 'questions.csv')
@@ -75,5 +80,7 @@ def new_answer(question_id):
 
 if __name__ == "__main__":
     app.run(
-        debug='true'
+        debug='true',
+        port=5000,
+        host='0.0.0.0'
     )
