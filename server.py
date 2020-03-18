@@ -10,13 +10,9 @@ def main_page():
 
 
 @app.route("/list")
-def list():
-    questions = data_handler.get_questions_data()
-
-
 @app.route("/list<header>&<direction>")
 def list(header=None, direction=None):
-    questions = data_handler.get_questions()
+    questions = data_handler.get_questions_data()
     table_headers = data_handler.question_table_headers
     if header not in data_handler.csv_question_headers or direction not in ['asc', 'desc']:
         return render_template('list.html', table_headers=table_headers, questions=questions)
@@ -108,16 +104,14 @@ def answer_vote_down(answer_id):
 
 @app.route('/question/<question_id>/delete')
 def delete_question(question_id):
-    questions = data_handler.get_questions()
+    questions = data_handler.get_questions_data()
     question = None
     for row in questions:
         if row['id'] == question_id:
             question = row
             break
-    print(question)
-    print(questions.index(question))
     questions.pop(questions.index(question))
-    data_handler.update_view_number(questions)
+    data_handler.update_question_view_number(questions)
     return render_template('main_page.html')
 
 
