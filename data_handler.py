@@ -1,7 +1,8 @@
 import csv
 from datetime import datetime
-csv_question_headers = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
-csv_answer_headers = ['id', 'submission_time', 'vote_number', 'question_id', 'message', 'image']
+from operator import itemgetter
+csv_question_headers = ['id','submission_time','view_number','vote_number','title','message', 'image']
+csv_answer_headers = ['id','submission_time','vote_number', 'question_id','message','image']
 
 question_table_headers = ['ID', 'Submission time', 'View number', 'Vote number', 'Title', 'Message', 'Image']
 
@@ -90,3 +91,11 @@ def get_row(id, lst):
         if row['id'] == id:
             row_num = index
     return row_num
+
+
+def sort_by(questions, header, direction):
+    reverse = False
+    if direction == 'desc':
+        reverse = True
+    return sorted(questions, key=itemgetter(header), reverse=reverse)
+
