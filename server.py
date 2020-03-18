@@ -78,6 +78,21 @@ def new_answer(question_id):
     return render_template('new-answer.html', question_data=question_data, question_id=question_id)
 
 
+@app.route('/question/<question_id>/delete')
+def delete_question(question_id):
+    questions = data_handler.get_questions()
+    question = None
+    for row in questions:
+        if row['id'] == question_id:
+            question = row
+            break
+    print(question)
+    print(questions.index(question))
+    questions.pop(questions.index(question))
+    data_handler.update_view_number(questions)
+    return render_template('main_page.html')
+
+
 if __name__ == "__main__":
     app.run(
         debug='true',
