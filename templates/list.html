@@ -21,6 +21,12 @@
                     <td>{{ row[element] }}</td>
                 {% endif %}
             {% endfor %}
+            <form action="/question/{{row["id"]}}/vote_up">
+                <td>&emsp;&emsp;<input type="submit" value="vote up"/></td>
+            </form>
+            <form action="/question/{{row["id"]}}/vote_down">
+                <td><input type="submit" value="vote down"/></td>
+            </form>
         </tr>
         {% endfor %}
     </table>

@@ -11,7 +11,7 @@ def main_page():
 
 @app.route("/list")
 def list():
-    questions = data_handler.get_questions()
+    questions = data_handler.get_questions_data()
     table_headers = data_handler.question_table_headers
     return render_template('list.html', table_headers=table_headers, questions=questions)
 
@@ -35,28 +35,22 @@ def add_question():
 
 @app.route('/question/<question_id>', methods=['GET', 'POST'])
 def id(question_id):
-    row_num = 0
-    questions = data_handler.get_questions()
+    questions = data_handler.get_questions_data()
     answers = data_handler.get_answers(question_id)
-    for index, row in enumerate(questions):
-        if row['id'] == question_id:
-            row_num = index
+    row_num = data_handler.get_row(question_id, questions)
     question_data = questions[row_num]
 
     if request.method == 'GET':
-        csv_question_headers = ['id', 'submission_time', 'view_number', 'vote_number', 'title', 'message', 'image']
         questions[row_num]['view_number'] = int(question_data['view_number']) + 1
-        data_handler.update_view_number(questions)
+        data_handler.update_question_view_number(questions)
 
     return render_template('display_question.html', question_id=question_id, question_data=question_data, answer_data=answers)
 
 
 @app.route('/question/<question_id>/new-answer', methods=['GET', 'POST'])
 def new_answer(question_id):
-    questions = data_handler.get_questions()
-    for index, row in enumerate(questions):
-        if row['id'] == question_id:
-            row_num = index
+    questions = data_handler.get_questions_data()
+    row_num = data_handler.get_row(question_id, questions)
     question_data = questions[row_num]
 
     if request.method == 'POST':
@@ -71,6 +65,36 @@ def new_answer(question_id):
 
         return redirect(f'/question/{question_id}')
     return render_template('new-answer.html', question_data=question_data, question_id=question_id)
+
+
+@app.route('/question/<question_id>/vote_up')
+def question_vote_up(question_id):
+    questions = data_handler.change_question_vote_count(question_id, +1)
+    data_handler.update_question_view_number(questions)
+    return redirect('/list')
+
+
+@app.route('/question/<question_id>/vote_down')
+def question_vote_down(question_id):
+    questions = data_handler.change_question_vote_count(question_id, -1)
+    data_handler.update_question_view_number(questions)
+    return redirect('/list')
+
+
+@app.route('/answer/<answer_id>/vote_up')
+def answer_vote_up(answer_id):
+    answers = data_handler.change_answer_vote_count(answer_id, +1)
+    question_id = answers[int(answer_id)]['question_id']
+    data_handler.update_answer_view_number(answers)
+    return redirect(f'/question/{question_id}')
+
+
+@app.route('/answer/<answer_id>/vote_down')
+def answer_vote_down(answer_id):
+    answers = data_handler.change_answer_vote_count(answer_id, -1)
+    question_id = answers[int(answer_id)]['question_id']
+    data_handler.update_answer_view_number(answers)
+    return redirect(f'/question/{question_id}')
 
 
 if __name__ == "__main__":
