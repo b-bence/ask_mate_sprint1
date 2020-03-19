@@ -36,7 +36,27 @@ def add_question():
         data_handler.write_new_data(data, 'questions.csv')
 
         return redirect(f'/question/{id}')
-    return render_template('add-question.html')
+    return render_template('add-question.html', button_text='Add new question',
+                           title_text='Add a question', action_text='/add-question')
+
+
+@app.route('/question/<question_id>/edit', methods=['GET', 'POST'])
+def edit(question_id):
+    questions = data_handler.get_questions_data()
+    question = [row for row in questions if row['id'] == question_id]
+
+    if request.method == 'POST':
+        title = request.form['title'].capitalize()
+        message = request.form['message'].capitalize()
+        list_index = questions.index(question[0])
+        question[0]['title'] = title
+        question[0]['message'] = message
+        questions[list_index] = question[0]
+        data_handler.update_question_view_number(questions)
+        return redirect('/list')
+
+    return render_template('add-question.html', title=question[0]['title'], message=question[0]['message'],
+                           button_text='Save', title_text='Edit a question', action_text=f'/question/{question_id}/edit')
 
 
 @app.route('/question/<question_id>', methods=['GET', 'POST'])

@@ -14,6 +14,9 @@
         <tr align="center">
                 <td>{{ question_data['title'] }}</td>
                 <td>{{ question_data['message'] }}</td>
+                <form action="/question/{{question_id}}/edit">
+                    <td><input type="submit" value="Edit"/></td>
+                </form>
         </tr>
     </table>
     <br>

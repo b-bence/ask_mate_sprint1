@@ -2,21 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Add a question</title>
+    <title>{{title_text}}</title>
 </head>
 <body>
      <header>
-        <h1>Add a question</h1>
+        <h1>{{ title_text }}</h1>
     </header>
 
-    <form action="/add-question" method="POST">
+    <form action="{{ action_text }}" method="POST">
         <label for="title">Title:</label><br>
-        <input id="title" name="title" type="text" minlength="5" required><br><br>
+        <input id="title" name="title" type="text" minlength="5" required value="{{ title }}"><br><br>
 
         <label for="message">Question message:</label><br>
-        <input id="message" name="message" rows="5" cols="30" required><br><br>
+        <input id="message" name="message" rows="5" cols="30" required value="{{ message }}"><br><br>
 
-        <button type="submit">Add new question</button>
+        <button type="submit">{{button_text}}</button>
     </form>
 </body>
 </html>
