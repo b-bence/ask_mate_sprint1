@@ -20,6 +20,8 @@
         </tr>
     </table>
     <br>
+    <img width='150' height='150' src="{{ url_for('static', filename=question_data['id']+'.jpg') }}">
+    <br>
     <table cellpadding="5">
         {% if answer_data==[] %}
             <tr>

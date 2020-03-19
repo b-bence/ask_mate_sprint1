@@ -9,12 +9,15 @@
         <h1>{{ title_text }}</h1>
     </header>
 
-    <form action="{{ action_text }}" method="POST">
+    <form action="{{ action_text }}" method="POST" enctype="multipart/form-data">
         <label for="title">Title:</label><br>
         <input id="title" name="title" type="text" minlength="5" required value="{{ title }}"><br><br>
 
         <label for="message">Question message:</label><br>
         <input id="message" name="message" rows="5" cols="30" required value="{{ message }}"><br><br>
+
+        <label for="image" class="uploadButton"></label>
+        <input type="file" name="image" id="image"/>
 
         <button type="submit">{{button_text}}</button>
     </form>

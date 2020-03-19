@@ -1,8 +1,9 @@
 from flask import Flask, render_template, request, redirect
 import data_handler
+import os
 
 app = Flask(__name__)
-
+APP_ROUTE = os.path.dirname(os.path.abspath(__file__))
 
 @app.route("/")
 def main_page():
@@ -31,6 +32,12 @@ def add_question():
         vote = 0
         title = request.form['title'].capitalize()
         message = request.form['message'].capitalize()
+        if request.files:
+            target = os.path.join(APP_ROUTE, 'static/')
+            image = request.files['image']
+            filename = ".".join([str(id), "jpg"])
+            image.save("/".join([target, filename]))
+
         data = [id, submission, view, vote, title, message]
 
         data_handler.write_new_data(data, 'questions.csv')
