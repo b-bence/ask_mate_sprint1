@@ -102,17 +102,14 @@ def answer_vote_down(answer_id):
     return redirect(f'/question/{question_id}')
 
 
-@app.route('/question/<question_id>/delete')
-def delete_question(question_id):
-    questions = data_handler.get_questions_data()
-    question = None
-    for row in questions:
-        if row['id'] == question_id:
-            question = row
-            break
-    questions.pop(questions.index(question))
-    data_handler.update_question_view_number(questions)
-    return render_template('main_page.html')
+@app.route('/question/<item_id>&<is_question>/delete')
+def delete_question(item_id, is_question):
+    if is_question == 'True':
+        data_handler.delete(item_id, True)
+        return render_template('main_page.html')
+    else:
+        data_handler.delete(item_id, False)
+        return redirect('/list')
 
 
 if __name__ == "__main__":

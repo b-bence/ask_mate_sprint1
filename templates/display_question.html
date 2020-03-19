@@ -38,6 +38,10 @@
                 <form action="/answer/{{answer["id"]}}/vote_down">
                     <td><input type="submit" value="vote down"/></td>
                 </form>
+
+                <form action="/question/{{answer["id"]}}&{{ false }}/delete">
+                    <td><input type="submit" value="Delete"/></td>
+                </form>
         </tr>
         {% endfor %}
     </table>
@@ -45,7 +49,7 @@
     <form action="/question/{{question_id}}/new-answer">
         <input type="submit" value="Add an answer" />
     </form><br>
-    <form action="/question/{{question_id}}/delete">
+    <form action="/question/{{question_id}}&{{ true }}/delete">
         <input type="submit" value="Delete question" />
     </form>
     <a href="/"> Return to main page</a>

@@ -99,3 +99,16 @@ def sort_by(questions, header, direction):
         reverse = True
     return sorted(questions, key=itemgetter(header), reverse=reverse)
 
+
+def delete(item_id, is_question):
+    answers = get_answers_data()
+    id_type = 'id'
+    if is_question is True:
+        id_type = 'question_id'
+        questions = get_questions_data()
+        [questions.remove(row) for row in questions if row['id'] == item_id]
+        update_question_view_number(questions)
+    [answers.remove(row) for row in answers if row[id_type] == item_id]
+    update_answer_view_number(answers)
+
+
