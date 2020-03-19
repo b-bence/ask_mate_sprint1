@@ -9,7 +9,13 @@
     <table cellpadding="5">
         <tr align="center">
             {% for header in table_headers%}
-            <th>{{ header }}</th>
+            <th>
+                <select onchange="location = this.value">
+                    <option>{{ header }}</option>
+                    <option value="/list{{header}}&asc">asc</option>
+                    <option value="/list{{header}}&desc">desc</option>
+                </select>
+            </th>
             {% endfor %}
         </tr>
         {% for row in questions%}

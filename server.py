@@ -14,10 +14,12 @@ def main_page():
 def list(header=None, direction=None):
     questions = data_handler.get_questions_data()
     table_headers = data_handler.question_table_headers
-    if header not in data_handler.csv_question_headers or direction not in ['asc', 'desc']:
+    if header not in data_handler.question_table_headers or direction not in ['asc', 'desc']:
         return render_template('list.html', table_headers=table_headers, questions=questions)
     else:
-        sorted_questions = data_handler.sort_by(questions, header, direction)
+        valid_header = header.replace(' ', '_').lower()
+        print(valid_header)
+        sorted_questions = data_handler.sort_by(questions, valid_header, direction)
         return render_template('list.html', table_headers=table_headers, questions=sorted_questions)
 
 
