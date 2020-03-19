@@ -106,9 +106,9 @@ def delete(item_id, is_question):
     if is_question is True:
         id_type = 'question_id'
         questions = get_questions_data()
-        [questions.remove(row) for row in questions if row['id'] == item_id]
-        update_question_view_number(questions)
-    [answers.remove(row) for row in answers if row[id_type] == item_id]
-    update_answer_view_number(answers)
+        new_question_list = [row for row in questions if row['id'] != item_id]
+        update_question_view_number(new_question_list)
+    new_answer_list = [row for row in answers if row[id_type] != item_id]
+    update_answer_view_number(new_answer_list)
 
 
