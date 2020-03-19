@@ -14,7 +14,7 @@ def main_page():
 @app.route("/list<header>&<direction>")
 def list(header=None, direction=None):
     questions = data_handler.get_questions_data()
-    table_headers = data_handler.question_table_headers
+    table_headers = data_handler.question_table_headers[1:-1]
     if header not in data_handler.question_table_headers or direction not in ['asc', 'desc']:
         return render_template('list.html', table_headers=table_headers, questions=questions)
     else:
@@ -140,7 +140,7 @@ def answer_vote_down(answer_id):
 def delete_question(item_id, is_question):
     if is_question == 'True':
         data_handler.delete(item_id, True)
-        return render_template('main_page.html')
+        return redirect('/list')
     else:
         data_handler.delete(item_id, False)
         return redirect('/list')

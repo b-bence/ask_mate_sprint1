@@ -10,10 +10,18 @@
         <tr align="center">
             <th> Question  </th>
             <th> Question message  </th>
+            <th> Vote number </th>
         </tr>
         <tr align="center">
                 <td>{{ question_data['title'] }}</td>
                 <td>{{ question_data['message'] }}</td>
+                <td>{{ question_data['vote_number'] }}</td>
+            <form action="/question/{{question_data["id"]}}/vote_up">
+                <td>&emsp;&emsp;<input type="submit" value="vote up"/></td>
+            </form>
+            <form action="/question/{{question_data["id"]}}/vote_down">
+                <td><input type="submit" value="vote down"/></td>
+            </form>
                 <form action="/question/{{question_id}}/edit">
                     <td><input type="submit" value="Edit"/></td>
                 </form>
@@ -58,6 +66,6 @@
     <form action="/question/{{question_id}}&{{ true }}/delete">
         <input type="submit" value="Delete question" />
     </form>
-    <a href="/"> Return to main page</a>
+    <a href="/list"> Return to questions</a>
 </body>
 </html>
