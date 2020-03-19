@@ -12,10 +12,15 @@ def current_time():
     return now.strftime("%Y-%m-%d %H:%M:%S")
 
 
-def get_questions_data():
+def get_questions_data(sort=False):
     with open('questions.csv', 'r') as csv_file:
         csv_reader = csv.DictReader(csv_file)
         lst = [x for x in csv_reader]
+        if sort is True:
+            for dict in lst:
+                for key, value in dict.items():
+                    if dict[key].isdigit():
+                        dict[key] = int(dict[key])
     return lst
 
 
@@ -93,7 +98,8 @@ def get_row(id, lst):
     return row_num
 
 
-def sort_by(questions, header, direction):
+def sort_by(header, direction):
+    questions = get_questions_data(True)
     reverse = False
     if direction == 'desc':
         reverse = True

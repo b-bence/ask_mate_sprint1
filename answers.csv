@@ -1,9 +1,9 @@
 id,submission_time,vote_number,question_id,message,image
 1,2010-01-02,5,0,Google it,
 2,2020-03-17 13:33:01,2,2,first answer,
-3,2020-03-17 13:33:06,1,2,second answer,
-7,2020-03-18 11:20:38,0,4,sadad,
-8,2020-03-18 11:20:41,0,4,sadad,
+3,2020-03-17 13:33:06,0,2,second answer,
+7,2020-03-18 11:20:38,1,4,sadad,
+8,2020-03-18 11:20:41,-1,4,sadad,
 9,2020-03-18 11:22:00,0,4,dsad,
 10,2020-03-18 14:32:13,0,4,dasdadksdasdkas[dkp[sap[dsadasdasdasd,
-11,2020-03-18 15:40:18,0,2,third answer,
+11,2020-03-18 15:40:18,3,2,third answer,

@@ -18,8 +18,7 @@ def list(header=None, direction=None):
         return render_template('list.html', table_headers=table_headers, questions=questions)
     else:
         valid_header = header.replace(' ', '_').lower()
-        print(valid_header)
-        sorted_questions = data_handler.sort_by(questions, valid_header, direction)
+        sorted_questions = data_handler.sort_by(valid_header, direction)
         return render_template('list.html', table_headers=table_headers, questions=sorted_questions)
 
 
