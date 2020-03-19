@@ -35,7 +35,7 @@ def add_question():
         if request.files:
             target = os.path.join(APP_ROUTE, 'static/')
             image = request.files['image']
-            filename = ".".join([str(id), "jpg"])
+            filename = ".".join([str(submission), "jpg"])
             image.save("/".join([target, filename]))
 
         data = [id, submission, view, vote, title, message]
@@ -92,8 +92,12 @@ def new_answer(question_id):
         vote_number = 0
         question_id = question_id
         message = request.form['answer']
-        image = None
-        data = [id, submission_time, vote_number, question_id, message, image]
+        if request.files:
+            target = os.path.join(APP_ROUTE, 'static/')
+            image = request.files['image']
+            filename = ".".join([str(submission_time), "jpg"])
+            image.save("/".join([target, filename]))
+        data = [id, submission_time, vote_number, question_id, message]
         data_handler.write_new_data(data, 'answers.csv')
 
         return redirect(f'/question/{question_id}')

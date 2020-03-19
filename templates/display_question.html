@@ -20,7 +20,7 @@
         </tr>
     </table>
     <br>
-    <img width='150' height='150' src="{{ url_for('static', filename=question_data['id']+'.jpg') }}">
+    <img alt="" width='150' height='150' src="{{ url_for('static', filename=question_data['submission_time']+'.jpg') }}">
     <br>
     <table cellpadding="5">
         {% if answer_data==[] %}
@@ -33,6 +33,7 @@
         <tr>
            <th> Answer: </th>
                 <td>{{ answer['message'] }}</td>
+                <td><img alt="" width='150' height='150' src="{{ url_for('static', filename=answer['submission_time']+'.jpg') }}"></td>
 
                 <td>&emsp;&emsp;&emsp;&emsp;Vote number:&emsp;&emsp;{{ answer['vote_number'] }}</td>
 
