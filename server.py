@@ -89,7 +89,8 @@ def question_vote_down(question_id):
 @app.route('/answer/<answer_id>/vote_up')
 def answer_vote_up(answer_id):
     answers = data_handler.change_answer_vote_count(answer_id, +1)
-    question_id = answers[int(answer_id)]['question_id']
+    row_num = data_handler.get_row(answer_id, answers)
+    question_id = answers[row_num]['question_id']
     data_handler.update_answer_view_number(answers)
     return redirect(f'/question/{question_id}')
 
@@ -97,7 +98,8 @@ def answer_vote_up(answer_id):
 @app.route('/answer/<answer_id>/vote_down')
 def answer_vote_down(answer_id):
     answers = data_handler.change_answer_vote_count(answer_id, -1)
-    question_id = answers[int(answer_id)]['question_id']
+    row_num = data_handler.get_row(answer_id, answers)
+    question_id = answers[row_num]['question_id']
     data_handler.update_answer_view_number(answers)
     return redirect(f'/question/{question_id}')
 
