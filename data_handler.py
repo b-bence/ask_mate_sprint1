@@ -19,7 +19,7 @@ def get_questions_data(sort=False):
         if sort is True:
             for dict in lst:
                 for key, value in dict.items():
-                    if dict[key].isdigit():
+                    if dict[key].isdigit() or key == 'vote_number':
                         dict[key] = int(dict[key])
     return lst
 
