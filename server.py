@@ -62,7 +62,7 @@ def edit(question_id):
         data_handler.update_question_view_number(questions)
         return redirect('/list')
 
-    return render_template('add-question.html', title=question[0]['title'], message=question[0]['message'],
+    return render_template('add-question.html', title=question[0]['title'], message=question[0]['message'], question_id=question_id,
                            button_text='Save', title_text='Edit a question', action_text=f'/question/{question_id}/edit')
 
 
