@@ -137,13 +137,9 @@ def answer_vote_down(answer_id):
 
 
 @app.route('/question/<item_id>&<is_question>/delete')
-def delete_question(item_id, is_question):
-    if is_question == 'True':
-        data_handler.delete(item_id, True)
-        return redirect('/list')
-    else:
-        data_handler.delete(item_id, False)
-        return redirect('/list')
+def delete(item_id, is_question):
+    data_handler.delete(item_id, is_question == 'True')
+    return redirect('/list')
 
 
 if __name__ == "__main__":
