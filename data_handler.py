@@ -208,3 +208,12 @@ def delete_question(cursor: RealDictCursor, question_id: int):
         WHERE id = %(question_id)s;"""
 
     cursor.execute(query, {'question_id': question_id})
+
+
+@database_common.connection_handler
+def update_question(cursor: RealDictCursor, title: str, message: str, question_id: int):
+    query = """
+        UPDATE question
+        SET title = %(title)s, message = %(message)s
+        WHERE id = %(question_id)s"""
+    cursor.execute(query, {'title': title, 'message': message, 'question_id': question_id})

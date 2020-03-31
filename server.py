@@ -49,21 +49,18 @@ def add_question():
 
 @app.route('/question/<question_id>/edit', methods=['GET', 'POST'])
 def edit(question_id):
-    questions = data_handler.get_questions_data()
-    question = [row for row in questions if row['id'] == question_id]
+    question = data_handler.get_single_question(question_id)
 
     if request.method == 'POST':
         title = request.form['title'].capitalize()
         message = request.form['message'].capitalize()
-        list_index = questions.index(question[0])
-        question[0]['title'] = title
-        question[0]['message'] = message
-        questions[list_index] = question[0]
+        data_handler.update_question(title, message, question_id)
 
-        data_handler.update_question_view_number(questions)
+        new_view_number = data_handler.get_views(question_id) + 1
+        data_handler.update_question_view_number(new_view_number, question_id)
         return redirect('/list')
 
-    return render_template('add-question.html', title=question[0]['title'], message=question[0]['message'], question_id=question_id,
+    return render_template('add-question.html', title=question['title'], message=question['message'], question_id=question_id,
                            button_text='Save', title_text='Edit a question', action_text=f'/question/{question_id}/edit')
 
 
