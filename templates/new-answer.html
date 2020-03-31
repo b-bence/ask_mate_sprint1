@@ -5,8 +5,8 @@
     <title>Add answer</title>
 </head>
 <body>
-    <h1>Add answer for: {{ question_data['title'] }}</h1>
-    <h3>Message for the question: {{ question_data['message'] }}</h3><br>
+    <h1>Add answer for: {{ question_data.title }}</h1>
+    <h3>Message for the question: {{ question_data.message }}</h3><br>
 
     <form action="/question/{{question_id}}/new-answer" method="POST" enctype="multipart/form-data">
 

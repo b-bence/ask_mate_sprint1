@@ -107,15 +107,6 @@ def update_question_view_number(cursor: RealDictCursor, num, id):
     """
     cursor.execute(sql, {'num': num, 'id': id})
 
-#
-# def update_answer_view_number(lst):
-#     with open('answers.csv', 'w') as new_file:
-#         fieldnames = csv_answer_headers
-#         csv_writer = csv.DictWriter(new_file, fieldnames=fieldnames)
-#         csv_writer.writeheader()
-#         for row in lst:
-#             csv_writer.writerow(row)
-
 
 @database_common.connection_handler
 def get_answer_vote_count(cursor: RealDictCursor, id) -> list:
@@ -163,12 +154,12 @@ def update_question_vote_number(cursor: RealDictCursor, num, id):
     cursor.execute(sql, {'num': num, 'id': id})
 
 
-def get_row(id, lst):
-    row_num = 0
-    for index, row in enumerate(lst):
-        if row['id'] == id:
-            row_num = index
-    return row_num
+# def get_row(id, lst):
+#     row_num = 0
+#     for index, row in enumerate(lst):
+#         if row['id'] == id:
+#             row_num = index
+#     return row_num
 
 
 def sort_by(header, direction):
@@ -188,17 +179,6 @@ def delete_answer(cursor: RealDictCursor, answer_id: int):
     cursor.execute(sql, {'answer_id': answer_id})
 
 
-# def delete(item_id, is_question):
-#     answers = get_answers_data()
-#     id_type = 'id'
-#     if is_question is True:
-#         id_type = 'question_id'
-#         questions = get_questions_data()
-#         new_question_list = [row for row in questions if row['id'] != item_id]
-#         update_question_view_number(new_question_list)
-#     new_answer_list = [row for row in answers if row[id_type] != item_id]
-#     update_answer_view_number(new_answer_list)
-
 @database_common.connection_handler
 def delete_question(cursor: RealDictCursor, question_id: int):
     query = """
@@ -208,6 +188,19 @@ def delete_question(cursor: RealDictCursor, question_id: int):
         WHERE id = %(question_id)s;"""
 
     cursor.execute(query, {'question_id': question_id})
+
+
+@database_common.connection_handler
+def search(cursor: RealDictCursor, input):
+    query = """
+        SELECT A.*
+        FROM question A
+        WHERE title LIKE %(input)s OR message LIKE %(input)s
+        OR A.id IN (SELECT B.question_id from answer B WHERE message LIKE %(input)s)
+    """
+    cursor.execute(query, {'input': '%' + input + '%'})
+    vote_num_data = cursor.fetchall()
+    return vote_num_data
 
 
 @database_common.connection_handler

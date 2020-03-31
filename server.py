@@ -23,6 +23,16 @@ def list(header=None, direction=None):
         return render_template('list.html', table_headers=table_headers, questions=sorted_questions)
 
 
+@app.route("/search")
+def search():
+    search_phrase = request.args.get('search')
+    table_headers = data_handler.question_table_headers[1:-1]
+    if search_phrase:
+        question_details = data_handler.search(search_phrase)
+
+    return render_template('list.html', questions=question_details, table_headers=table_headers)
+
+
 @app.route("/add-question", methods=['GET', 'POST'])
 def add_question():
     if request.method == 'POST':
@@ -78,9 +88,7 @@ def id(question_id):
 
 @app.route('/question/<question_id>/new-answer', methods=['GET', 'POST'])
 def new_answer(question_id):
-    questions = data_handler.get_questions_data()
-    row_num = data_handler.get_row(question_id, questions)
-    question_data = questions[row_num]
+    question_data = data_handler.get_single_question(question_id)
 
     if request.method == 'POST':
         id = data_handler.generate_new_id('answer')
