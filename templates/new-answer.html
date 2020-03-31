@@ -5,19 +5,16 @@
     <title>Add answer</title>
 </head>
 <body>
-    <h1>Add answer for: {{ question_data.title }}</h1>
+    <h1>{{ todo }} answer for: {{ question_data.title }}</h1>
     <h3>Message for the question: {{ question_data.message }}</h3><br>
 
-    <form action="/question/{{question_id}}/new-answer" method="POST" enctype="multipart/form-data">
-
-    <label for="answer">What is your answer for this question?</label><br>
-    <textarea id="answer" name="answer" rows="5" cols="30"></textarea><br><br>
-
+{#    <form action="/question/{{question_id}}/new-answer" method="POST" enctype="multipart/form-data">#}
+    <form action="{{ action_text }}" method="POST" enctype="multipart/form-data">
+        <label for="answer">What is your answer for this question?</label><br>
+        <textarea id="answer" name="answer" rows="5" cols="30">{{ answer_data.message }}</textarea><br><br>
         <label for="image" class="uploadButton"></label>
         <input type="file" name="image" id="image"/><br><br>
-
         <button type="submit">Add your answer</button>
-
     </form>
 </body>
 </html>

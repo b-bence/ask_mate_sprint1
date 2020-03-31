@@ -53,6 +53,10 @@
                     <td><input type="submit" value="vote down"/></td>
                 </form>
 
+                <form action="/answer/{{answer.id}}/edit">
+                    <td><input type="submit" value="edit"/></td>
+                </form>
+
                 <form action="/question/{{answer.id}}&{{ false }}/delete">
                     <td><input type="submit" value="Delete"/></td>
                 </form>

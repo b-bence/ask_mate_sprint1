@@ -48,8 +48,7 @@ def add_question():
             filename = ".".join([str(submission), "jpg"])
             image.save("/".join([target, filename]))
 
-        data = {'id':id, 'submission': submission, 'view':view, 'vote':vote, 'title':title, 'message':message}
-
+        data = {'id': id, 'submission': submission, 'view': view, 'vote': vote, 'title': title, 'message': message}
         data_handler.write_question_data(data)
 
         return redirect(f'/question/{id}')
@@ -86,6 +85,20 @@ def id(question_id):
     return render_template('display_question.html', question_id=question_id, question_data=question_data, answer_data=answers)
 
 
+@app.route('/answer/<answer_id>/edit', methods=['GET', 'POST'])
+def edit_answer(answer_id):
+    answer_data = data_handler.get_single_answer(answer_id)
+    question_id = answer_data['question_id']
+    question_data = data_handler.get_single_question(question_id)
+
+    if request.method == 'POST':
+        message = request.form['answer']
+        data_handler.update_answer(answer_id, message)
+        return redirect(f'/question/{question_id}')
+    return render_template('new-answer.html', answer_data=answer_data, question_data=question_data,
+                           question_id=question_id, todo='Edit', action_text=f'/answer/{answer_id}/edit')
+
+
 @app.route('/question/<question_id>/new-answer', methods=['GET', 'POST'])
 def new_answer(question_id):
     question_data = data_handler.get_single_question(question_id)
@@ -106,7 +119,8 @@ def new_answer(question_id):
         data_handler.write_answer_data(data)
 
         return redirect(f'/question/{question_id}')
-    return render_template('new-answer.html', question_data=question_data, question_id=question_id)
+    return render_template('new-answer.html', question_data=question_data, question_id=question_id, todo='Add',
+                           action_text=f'/question/{question_id}/new-answer')
 
 
 @app.route('/question/<question_id>/vote_up')

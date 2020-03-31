@@ -38,6 +38,17 @@ def get_single_question(cursor: RealDictCursor, id) -> list:
 
 
 @database_common.connection_handler
+def get_single_answer(cursor: RealDictCursor, id) -> list:
+    query = """
+            SELECT *
+            FROM answer
+            WHERE id=%(id)s"""
+    cursor.execute(query, {'id': id})
+    [data] = cursor.fetchall()
+    return data
+
+
+@database_common.connection_handler
 def get_answers_data(cursor: RealDictCursor) -> list:
     query = """
         SELECT *
@@ -154,14 +165,6 @@ def update_question_vote_number(cursor: RealDictCursor, num, id):
     cursor.execute(sql, {'num': num, 'id': id})
 
 
-# def get_row(id, lst):
-#     row_num = 0
-#     for index, row in enumerate(lst):
-#         if row['id'] == id:
-#             row_num = index
-#     return row_num
-
-
 def sort_by(header, direction):
     questions = get_questions_data(True)
     reverse = False
@@ -210,3 +213,13 @@ def update_question(cursor: RealDictCursor, title: str, message: str, question_i
         SET title = %(title)s, message = %(message)s
         WHERE id = %(question_id)s"""
     cursor.execute(query, {'title': title, 'message': message, 'question_id': question_id})
+
+
+@database_common.connection_handler
+def update_answer(cursor: RealDictCursor, id: int, message: str):
+    query = """
+        UPDATE answer
+        SET message = %(message)s
+        WHERE id = %(id)s
+    """
+    cursor.execute(query, {'id':id, 'message': message})
