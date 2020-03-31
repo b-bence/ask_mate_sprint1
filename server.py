@@ -26,7 +26,7 @@ def list(header=None, direction=None):
 @app.route("/add-question", methods=['GET', 'POST'])
 def add_question():
     if request.method == 'POST':
-        id = data_handler.generate_new_id('questions.csv')
+        id = data_handler.generate_new_id('question')
         submission = data_handler.current_time()
         view = 0
         vote = 0
@@ -38,9 +38,9 @@ def add_question():
             filename = ".".join([str(submission), "jpg"])
             image.save("/".join([target, filename]))
 
-        data = [id, submission, view, vote, title, message]
+        data = {'id':id, 'submission': submission, 'view':view, 'vote':vote, 'title':title, 'message':message}
 
-        data_handler.write_new_data(data, 'questions.csv')
+        data_handler.write_question_data(data)
 
         return redirect(f'/question/{id}')
     return render_template('add-question.html', button_text='Add new question',
@@ -59,6 +59,7 @@ def edit(question_id):
         question[0]['title'] = title
         question[0]['message'] = message
         questions[list_index] = question[0]
+
         data_handler.update_question_view_number(questions)
         return redirect('/list')
 
@@ -68,14 +69,12 @@ def edit(question_id):
 
 @app.route('/question/<question_id>', methods=['GET', 'POST'])
 def id(question_id):
-    questions = data_handler.get_questions_data()
     answers = data_handler.get_answers(question_id)
-    row_num = data_handler.get_row(question_id, questions)
-    question_data = questions[row_num]
+    question_data = data_handler.get_single_question(question_id)
 
     if request.method == 'GET':
-        questions[row_num]['view_number'] = int(question_data['view_number']) + 1
-        data_handler.update_question_view_number(questions)
+        new_view_number = data_handler.get_views(question_id) + 1
+        data_handler.update_question_view_number(new_view_number, question_id)
 
     return render_template('display_question.html', question_id=question_id, question_data=question_data, answer_data=answers)
 
@@ -87,7 +86,7 @@ def new_answer(question_id):
     question_data = questions[row_num]
 
     if request.method == 'POST':
-        id = data_handler.generate_new_id('answers.csv')
+        id = data_handler.generate_new_id('answer')
         submission_time = data_handler.current_time()
         vote_number = 0
         question_id = question_id
@@ -97,8 +96,9 @@ def new_answer(question_id):
             image = request.files['image']
             filename = ".".join([str(submission_time), "jpg"])
             image.save("/".join([target, filename]))
-        data = [id, submission_time, vote_number, question_id, message]
-        data_handler.write_new_data(data, 'answers.csv')
+
+        data = {'id': id, 'submission': submission_time, 'vote': vote_number, 'question_id': question_id, 'message': message}
+        data_handler.write_answer_data(data)
 
         return redirect(f'/question/{question_id}')
     return render_template('new-answer.html', question_data=question_data, question_id=question_id)
@@ -106,33 +106,35 @@ def new_answer(question_id):
 
 @app.route('/question/<question_id>/vote_up')
 def question_vote_up(question_id):
-    questions = data_handler.change_question_vote_count(question_id, +1)
-    data_handler.update_question_view_number(questions)
+    vote_num_data = data_handler.get_question_vote_count(question_id)
+    new_vote_num = vote_num_data['vote_number'] + 1
+    data_handler.update_question_vote_number(new_vote_num, question_id)
     return redirect('/list')
 
 
 @app.route('/question/<question_id>/vote_down')
 def question_vote_down(question_id):
-    questions = data_handler.change_question_vote_count(question_id, -1)
-    data_handler.update_question_view_number(questions)
+    vote_num_data = data_handler.get_question_vote_count(question_id)
+    new_vote_num = vote_num_data['vote_number'] - 1
+    data_handler.update_question_vote_number(new_vote_num, question_id)
     return redirect('/list')
 
 
 @app.route('/answer/<answer_id>/vote_up')
 def answer_vote_up(answer_id):
-    answers = data_handler.change_answer_vote_count(answer_id, +1)
-    row_num = data_handler.get_row(answer_id, answers)
-    question_id = answers[row_num]['question_id']
-    data_handler.update_answer_view_number(answers)
+    vote_num_data = data_handler.get_answer_vote_count(answer_id)
+    new_vote_num = vote_num_data['vote_number'] + 1
+    question_id = vote_num_data['question_id']
+    data_handler.update_answer_vote_number(new_vote_num, answer_id)
     return redirect(f'/question/{question_id}')
 
 
 @app.route('/answer/<answer_id>/vote_down')
 def answer_vote_down(answer_id):
-    answers = data_handler.change_answer_vote_count(answer_id, -1)
-    row_num = data_handler.get_row(answer_id, answers)
-    question_id = answers[row_num]['question_id']
-    data_handler.update_answer_view_number(answers)
+    vote_num_data = data_handler.get_answer_vote_count(answer_id)
+    new_vote_num = vote_num_data['vote_number'] - 1
+    question_id = vote_num_data['question_id']
+    data_handler.update_answer_vote_number(new_vote_num, answer_id)
     return redirect(f'/question/{question_id}')
 
 

@@ -23,7 +23,8 @@
             {% for element in row %}
                 {% if element=="id" %}
                 {% elif element=="title" %}
-                    <td><a href='/question/{{ row["id"] }}'>{{ row[element] }}</a></td>
+{#                    <td><a href='/question/{{ row["id"] }}'>{{ row[element] }}</a></td>#}
+                    <td><a href='/question/{{ row["id"] }}'>{{ row[element] }}</a></td>#}
                 {% else %}
                     <td>{{ row[element] }}</td>
                 {% endif %}

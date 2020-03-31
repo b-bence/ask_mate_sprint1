@@ -1,6 +1,11 @@
 import csv
 from datetime import datetime
 from operator import itemgetter
+from psycopg2 import sql
+from psycopg2._psycopg import cursor
+from psycopg2.extras import RealDictCursor
+import database_common
+
 csv_question_headers = ['id','submission_time','view_number','vote_number','title','message', 'image']
 csv_answer_headers = ['id','submission_time','vote_number', 'question_id','message','image']
 
@@ -12,82 +17,150 @@ def current_time():
     return now.strftime("%Y-%m-%d %H:%M:%S")
 
 
-def get_questions_data(sort=False):
-    with open('questions.csv', 'r') as csv_file:
-        csv_reader = csv.DictReader(csv_file)
-        lst = [x for x in csv_reader]
-        if sort is True:
-            for dict in lst:
-                for key, value in dict.items():
-                    if dict[key].isdigit() or key == 'vote_number':
-                        dict[key] = int(dict[key])
-    return lst
+@database_common.connection_handler
+def get_questions_data(cursor: RealDictCursor, sort=False,) -> list:
+    query = """
+        SELECT *
+        FROM question"""
+    cursor.execute(query)
+    return cursor.fetchall()
 
 
-def get_answers_data():
-    with open('answers.csv', 'r') as csv_file:
-        csv_reader = csv.DictReader(csv_file)
-        lst = [x for x in csv_reader]
-    return lst
+@database_common.connection_handler
+def get_single_question(cursor: RealDictCursor, id) -> list:
+    query = """
+        SELECT *
+        FROM question
+        WHERE id=%(id)s"""
+    cursor.execute(query, {'id':id})
+    [data] = cursor.fetchall()
+    return data
 
 
-def generate_new_id(filename):
-    max_id = 0
-    with open(filename, 'r') as csv_file:
-        csv_reader = csv.DictReader(csv_file)
-        for i in csv_reader:
-            if int(i['id']) >= max_id:
-                max_id = int(i['id']) + 1
-    return max_id
+@database_common.connection_handler
+def get_answers_data(cursor: RealDictCursor) -> list:
+    query = """
+        SELECT *
+        FROM answer"""
+    cursor.execute(query)
+    return cursor.fetchall()
 
 
-def write_new_data(lst, filename):
-    with open(filename, 'a') as file:
-        wr = csv.writer(file)
-        wr.writerow(lst)
+@database_common.connection_handler
+def get_views(cursor: RealDictCursor, id):
+    query = """
+        SELECT view_number
+        FROM question
+        WHERE id=%(id)s"""
+    cursor.execute(query, {'id': id})
+    [view_num] = cursor.fetchall()
+    return int(view_num['view_number'])
 
 
-def get_answers(id):
-    with open('answers.csv', 'r') as csv_file:
-        csv_reader = csv.DictReader(csv_file)
-        answers = [answer for answer in csv_reader if answer['question_id']==str(id)]
-    return answers
+@database_common.connection_handler
+def generate_new_id(cursor: RealDictCursor, filename):
+    query = """SELECT MAX(id) FROM {}"""
+    cursor.execute(sql.SQL(query).format(sql.Identifier(filename)))
+    [max_value] = cursor.fetchall()
+    return int(max_value['max']) + 1
 
 
-def update_question_view_number(lst):
-    with open('questions.csv', 'w') as new_file:
-        fieldnames = csv_question_headers
-        csv_writer = csv.DictWriter(new_file, fieldnames=fieldnames)
-        csv_writer.writeheader()
-        for row in lst:
-            csv_writer.writerow(row)
+@database_common.connection_handler
+def write_question_data(cursor: RealDictCursor, new_question):
+    sql = """
+        INSERT INTO question
+        VALUES (%s, %s, %s, %s, %s, %s);
+    """
+    cursor.execute(sql, (new_question['id'], new_question['submission'], new_question['view'],
+                         new_question['vote'], new_question['title'], new_question['message']))
 
 
-def update_answer_view_number(lst):
-    with open('answers.csv', 'w') as new_file:
-        fieldnames = csv_answer_headers
-        csv_writer = csv.DictWriter(new_file, fieldnames=fieldnames)
-        csv_writer.writeheader()
-        for row in lst:
-            csv_writer.writerow(row)
+@database_common.connection_handler
+def write_answer_data(cursor: RealDictCursor, new_answer):
+    sql = """
+        INSERT INTO answer
+        VALUES (%s, %s, %s, %s, %s);
+    """
+    cursor.execute(sql, (new_answer['id'], new_answer['submission'],
+                         new_answer['vote'], new_answer['question_id'], new_answer['message']))
 
 
-def change_question_vote_count(id, num):
-    dataset = get_questions_data()
-    row_num = get_row(id, dataset)
-    question_data = dataset[row_num]
-    dataset[row_num]['vote_number'] = int(question_data['vote_number']) + num
-    update_question_view_number(dataset)
-    return dataset
+@database_common.connection_handler
+def get_answers(cursor: RealDictCursor, id) -> list:
+    query = """
+        SELECT *
+        FROM answer
+        WHERE question_id=%(id)s"""
+    cursor.execute(query, {'id': id})
+    answer = cursor.fetchall()
+    return answer
 
 
-def change_answer_vote_count(id, num):
-    dataset = get_answers_data()
-    row_num = get_row(id, dataset)
-    answer_data = dataset[row_num]
-    dataset[row_num]['vote_number'] = int(answer_data['vote_number']) + num
-    update_answer_view_number(dataset)
-    return dataset
+@database_common.connection_handler
+def update_question_view_number(cursor: RealDictCursor, num, id):
+    sql = """
+            UPDATE question
+            SET view_number = %(num)s
+            WHERE id = %(id)s
+            ;
+
+    """
+    cursor.execute(sql, {'num': num, 'id': id})
+
+#
+# def update_answer_view_number(lst):
+#     with open('answers.csv', 'w') as new_file:
+#         fieldnames = csv_answer_headers
+#         csv_writer = csv.DictWriter(new_file, fieldnames=fieldnames)
+#         csv_writer.writeheader()
+#         for row in lst:
+#             csv_writer.writerow(row)
+
+
+@database_common.connection_handler
+def get_answer_vote_count(cursor: RealDictCursor, id) -> list:
+    query = """
+        SELECT vote_number, question_id
+        FROM answer
+        WHERE id=%(id)s"""
+    cursor.execute(query, {'id': id})
+    [vote_num_data] = cursor.fetchall()
+    return vote_num_data
+
+
+@database_common.connection_handler
+def update_answer_vote_number(cursor: RealDictCursor, num, id):
+    sql = """
+            UPDATE answer
+            SET vote_number = %(num)s
+            WHERE id = %(id)s
+            ;
+
+    """
+    cursor.execute(sql, {'num': num, 'id': id})
+
+
+@database_common.connection_handler
+def get_question_vote_count(cursor: RealDictCursor, id):
+    query = """
+        SELECT vote_number
+        FROM question
+        WHERE id=%(id)s"""
+    cursor.execute(query, {'id': id})
+    [vote_num_data] = cursor.fetchall()
+    return vote_num_data
+
+
+@database_common.connection_handler
+def update_question_vote_number(cursor: RealDictCursor, num, id):
+    sql = """
+            UPDATE question
+            SET vote_number = %(num)s
+            WHERE id = %(id)s
+            ;
+
+    """
+    cursor.execute(sql, {'num': num, 'id': id})
 
 
 def get_row(id, lst):
@@ -104,6 +177,14 @@ def sort_by(header, direction):
     if direction == 'desc':
         reverse = True
     return sorted(questions, key=itemgetter(header), reverse=reverse)
+
+
+def delete_answer(cursor: RealDictCursor, answer_id):
+    sql = """
+        DELETE FROM answer
+        WHERE id = %(answer_id)s;
+    """
+    cursor.execute(sql, {'answer_id': answer_id})
 
 
 def delete(item_id, is_question):

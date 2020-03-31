@@ -13,10 +13,10 @@
             <th> Vote number </th>
         </tr>
         <tr align="center">
-                <td>{{ question_data['title'] }}</td>
-                <td>{{ question_data['message'] }}</td>
-                <td>{{ question_data['vote_number'] }}</td>
-            <form action="/question/{{question_data["id"]}}/vote_up">
+                <td>{{ question_data.title }}</td>
+                <td>{{ question_data.message }}</td>
+                <td>{{ question_data.vote_nymber }}</td>
+            <form action="/question/{{question_data.id}}/vote_up">
                 <td>&emsp;&emsp;<input type="submit" value="vote up"/></td>
             </form>
             <form action="/question/{{question_data["id"]}}/vote_down">
@@ -28,7 +28,7 @@
         </tr>
     </table>
     <br>
-    <img alt="" width='150' height='150' src="{{ url_for('static', filename=question_data['submission_time']+'.jpg') }}">
+    <img alt="" width='150' height='150' src="{{ url_for('static', filename=question_data['submission_time']) }}">
     <br>
     <table cellpadding="5">
         {% if answer_data==[] %}
@@ -41,19 +41,19 @@
         <tr>
            <th> Answer: </th>
                 <td>{{ answer['message'] }}</td>
-                <td><img alt="" width='150' height='150' src="{{ url_for('static', filename=answer['submission_time']+'.jpg') }}"></td>
+                <td><img alt="" width='150' height='150' src="{{ url_for('static', filename=answer['submission_time']) }}"></td>
 
                 <td>&emsp;&emsp;&emsp;&emsp;Vote number:&emsp;&emsp;{{ answer['vote_number'] }}</td>
 
-                <form action="/answer/{{answer["id"]}}/vote_up">
+                <form action="/answer/{{answer.id}}/vote_up">
                     <td>&emsp;&emsp;<input type="submit" value="vote up"/></td>
                 </form>
 
-                <form action="/answer/{{answer["id"]}}/vote_down">
+                <form action="/answer/{{answer.id}}/vote_down">
                     <td><input type="submit" value="vote down"/></td>
                 </form>
 
-                <form action="/question/{{answer["id"]}}&{{ false }}/delete">
+                <form action="/question/{{answer.id}}&{{ false }}/delete">
                     <td><input type="submit" value="Delete"/></td>
                 </form>
         </tr>

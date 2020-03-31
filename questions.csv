@@ -1,4 +1,11 @@
 id,submission_time,view_number,vote_number,title,message,image
-0,2020-03-20 08:41:40,10,1,Why does html think “chucknorris” is a color?,This,
-2,2020-03-20 09:02:15,4,0,Why did the chicken cross the road,"The question first appeared in the knickerbocker, a new york city magazine.",
-3,2020-03-20 10:36:41,2,0,Is this gonna work,A,
+0,2017-04-28 08:29:00,30,7,How to make lists in Python?,"I am totally new to this, any hints?",
+1,2017-04-29 09:19:00,15,9,Wordpress loading multiple jQuery Versions,"I developed a plugin that uses the jquery booklet plugin (http://builtbywill.com/booklet/#/) this plugin binds a function to $ so I cann call $("".myBook"").booklet();
+I could easy managing the loading order with wp_enqueue_script so first I load jquery then I load booklet so everything is fine.
+BUT in my theme i also using jquery via webpack so the loading order is now following:
+jquery
+booklet
+app.js (bundled file with webpack, including jquery)",images/image1.png
+2,2017-05-01 10:41:00,1364,57,Drawing canvas with an image picked with Cordova Camera Plugin,"I'm getting an image from device and drawing a canvas with filters using Pixi JS. It works all well using computer to get an image. But when I'm on IOS, it throws errors such as cross origin issue, or that I'm trying to use an unknown format.
+",
+3,2020-03-30 22:02:18,0,0,Sddasd,Sadad,
