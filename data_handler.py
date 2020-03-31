@@ -179,7 +179,8 @@ def sort_by(header, direction):
     return sorted(questions, key=itemgetter(header), reverse=reverse)
 
 
-def delete_answer(cursor: RealDictCursor, answer_id):
+@database_common.connection_handler
+def delete_answer(cursor: RealDictCursor, answer_id: int):
     sql = """
         DELETE FROM answer
         WHERE id = %(answer_id)s;
@@ -187,15 +188,23 @@ def delete_answer(cursor: RealDictCursor, answer_id):
     cursor.execute(sql, {'answer_id': answer_id})
 
 
-def delete(item_id, is_question):
-    answers = get_answers_data()
-    id_type = 'id'
-    if is_question is True:
-        id_type = 'question_id'
-        questions = get_questions_data()
-        new_question_list = [row for row in questions if row['id'] != item_id]
-        update_question_view_number(new_question_list)
-    new_answer_list = [row for row in answers if row[id_type] != item_id]
-    update_answer_view_number(new_answer_list)
+# def delete(item_id, is_question):
+#     answers = get_answers_data()
+#     id_type = 'id'
+#     if is_question is True:
+#         id_type = 'question_id'
+#         questions = get_questions_data()
+#         new_question_list = [row for row in questions if row['id'] != item_id]
+#         update_question_view_number(new_question_list)
+#     new_answer_list = [row for row in answers if row[id_type] != item_id]
+#     update_answer_view_number(new_answer_list)
 
+@database_common.connection_handler
+def delete_question(cursor: RealDictCursor, question_id: int):
+    query = """
+        DELETE FROM answer
+        WHERE question_id = %(question_id)s;
+        DELETE FROM question
+        WHERE id = %(question_id)s;"""
 
+    cursor.execute(query, {'question_id': question_id})
