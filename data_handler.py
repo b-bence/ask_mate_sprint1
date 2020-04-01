@@ -326,6 +326,7 @@ def delete_tag(cursor: RealDictCursor, question_id, tag_id):
     cursor.execute(query, {'question_id': question_id, 'tag_id': tag_id})
 
 
+@database_common.connection_handler
 def get_comments(cursor: RealDictCursor) -> list:
     query = """
         SELECT *
@@ -341,3 +342,8 @@ def delete_answer_comments(cursor: RealDictCursor, answer_id: int):
         DELETE FROM comment
         WHERE answer_id = %(answer_id)s"""
     cursor.execute(query, {'answer_id': answer_id})
+
+
+@database_common.connection_handler
+def delete_question_comments(cursor: RealDictCursor):
+    pass

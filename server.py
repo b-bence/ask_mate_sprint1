@@ -186,8 +186,8 @@ def delete(item_id, is_question):
     if is_question == 'True':
         data_handler.delete_question(item_id)
     else:
+        data_handler.delete_answer_comments(item_id)
         data_handler.delete_answer(item_id)
-        # data_handler.delete_answer_comments(item_id)
     return redirect('/list')
 
 
