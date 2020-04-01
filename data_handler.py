@@ -184,7 +184,12 @@ def delete_answer(cursor: RealDictCursor, answer_id: int):
 
 @database_common.connection_handler
 def delete_question(cursor: RealDictCursor, question_id: int):
+    answers = get_answers(question_id)
+    for answer in answers:
+        delete_answer_comments(answer['id'])
     query = """
+        DELETE FROM comment
+        WHERE question_id = %(question_id)s;
         DELETE FROM answer
         WHERE question_id = %(question_id)s;
         DELETE FROM question
