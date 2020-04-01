@@ -351,7 +351,13 @@ def delete_answer_comments(cursor: RealDictCursor, answer_id: int):
 
 @database_common.connection_handler
 def get_comment_by_id(cursor: RealDictCursor, comment_id: int):
-    pass
+    query = """
+        SELECT *
+        FROM comment
+        WHERE id = %(comment_id)s;"""
+    cursor.execute(query, {'comment_id': comment_id})
+    [data] = cursor.fetchall()
+    return data
 
 
 @database_common.connection_handler
@@ -363,8 +369,12 @@ def delete_comment_by_id(cursor: RealDictCursor, comment_id: int):
 
 
 @database_common.connection_handler
-def edit_comment_by_id(cursor: RealDictCursor, comment_id: int):
-    pass
+def update_comment_by_id(cursor: RealDictCursor, comment_id: int, message: str, edited_count: int):
+    query = """
+        UPDATE comment
+        SET message = %(message)s, edited_count = %(edited_count)s
+        WHERE id = %(comment_id)s"""
+    cursor.execute(query, {'message': message, 'edited_count': edited_count, 'comment_id': comment_id})
 
 
 @database_common.connection_handler
@@ -372,7 +382,7 @@ def get_question_id_by_comment(cursor: RealDictCursor, comment_id):
     query = """
         SELECT question_id
         FROM comment
-        WHERE id = %(comment_id)s"""
+        WHERE id = %(comment_id)s;"""
     cursor.execute(query, {'comment_id': comment_id})
     [data] = cursor.fetchall()
     question_id = data['question_id']
@@ -380,7 +390,7 @@ def get_question_id_by_comment(cursor: RealDictCursor, comment_id):
         sec_query = """
             SELECT answer_id
             FROM comment
-            WHERE id = %(comment_id)s"""
+            WHERE id = %(comment_id)s;"""
         cursor.execute(sec_query, {'comment_id': comment_id})
         [sec_data] = cursor.fetchall()
         answer_id = sec_data['answer_id']
