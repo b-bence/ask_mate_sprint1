@@ -350,5 +350,39 @@ def delete_answer_comments(cursor: RealDictCursor, answer_id: int):
 
 
 @database_common.connection_handler
-def delete_question_comments(cursor: RealDictCursor):
+def get_comment_by_id(cursor: RealDictCursor, comment_id: int):
     pass
+
+
+@database_common.connection_handler
+def delete_comment_by_id(cursor: RealDictCursor, comment_id: int):
+    query = """
+            DELETE FROM comment
+            WHERE id = %(comment_id)s"""
+    cursor.execute(query, {'comment_id': comment_id})
+
+
+@database_common.connection_handler
+def edit_comment_by_id(cursor: RealDictCursor, comment_id: int):
+    pass
+
+
+@database_common.connection_handler
+def get_question_id_by_comment(cursor: RealDictCursor, comment_id):
+    query = """
+        SELECT question_id
+        FROM comment
+        WHERE id = %(comment_id)s"""
+    cursor.execute(query, {'comment_id': comment_id})
+    [data] = cursor.fetchall()
+    question_id = data['question_id']
+    if question_id is None:
+        sec_query = """
+            SELECT answer_id
+            FROM comment
+            WHERE id = %(comment_id)s"""
+        cursor.execute(sec_query, {'comment_id': comment_id})
+        [sec_data] = cursor.fetchall()
+        answer_id = sec_data['answer_id']
+        question_id = get_question_id_by_answer(answer_id)
+    return question_id

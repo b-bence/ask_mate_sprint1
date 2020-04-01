@@ -218,6 +218,13 @@ def delete_tag(question_id, tag_id):
     return redirect(f'/question/{question_id}')
 
 
+@app.route('/comments/<comment_id>/delete')
+def delete_comment(comment_id):
+    question_id = data_handler.get_question_id_by_comment(comment_id)
+    data_handler.delete_comment_by_id(comment_id)
+    return redirect(f'/question/{question_id}')
+
+
 if __name__ == "__main__":
     app.run(
         debug='true',
