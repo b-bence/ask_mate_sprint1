@@ -314,3 +314,13 @@ def get_question_id_by_answer(cursor: RealDictCursor, answer_id: int):
     cursor.execute(query, {'answer_id': answer_id})
     [data] = cursor.fetchall()
     return data['question_id']
+
+
+@database_common.connection_handler
+def get_comments(cursor: RealDictCursor) -> list:
+    query = """
+        SELECT *
+        FROM comment
+        ORDER BY submission_time"""
+    cursor.execute(query)
+    return cursor.fetchall()
