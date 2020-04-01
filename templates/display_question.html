@@ -130,6 +130,11 @@
                                     <button type="submit">Delete</button>
                                 </form>
                             </td>
+                            <td>
+                                <form action="/comment/{{comment.id}}/edit">
+                                    <button type="submit">Edit</button>
+                                </form>
+                            </td>
                         </tr>
                     {% endif %}
                 {% endfor %}
