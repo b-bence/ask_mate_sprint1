@@ -198,8 +198,8 @@ def search(cursor: RealDictCursor, input):
     query = """
         SELECT A.*
         FROM question A
-        WHERE title LIKE %(input)s OR message LIKE %(input)s
-        OR A.id IN (SELECT B.question_id from answer B WHERE message LIKE %(input)s)
+        WHERE title ILIKE %(input)s OR message ILIKE %(input)s
+        OR A.id IN (SELECT B.question_id from answer B WHERE message ILIKE %(input)s)
     """
     cursor.execute(query, {'input': '%' + input + '%'})
     vote_num_data = cursor.fetchall()
@@ -314,3 +314,13 @@ def get_question_id_by_answer(cursor: RealDictCursor, answer_id: int):
     cursor.execute(query, {'answer_id': answer_id})
     [data] = cursor.fetchall()
     return data['question_id']
+
+
+@database_common.connection_handler
+def delete_tag(cursor: RealDictCursor, question_id, tag_id):
+    query = """
+        DELETE FROM question_tag
+        WHERE question_id = %(question_id)s
+        AND tag_id = %(tag_id)s
+    """
+    cursor.execute(query, {'question_id': question_id, 'tag_id': tag_id})

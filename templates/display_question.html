@@ -25,16 +25,23 @@
                 <form action="/question/{{question_id}}/edit">
                     <td><input type="submit" value="Edit"/></td>
                 </form>
-        </tr>
-        <tr>
-            <td>Tags: {% for tag in question_tags %} {{ tag.name }} {% endfor %}</td>
-            <form action="{{ url_for('tag_question', question_id=question_id) }}">
-                    <td><input type="submit" value="Add a new tag"/></td>
-            </form>
+            <td>
+            </td>
+
         </tr>
     </table>
-    <br>
     <img alt="" width='150' height='150' src="{{ url_for('static', filename=question_data['submission_time']) }}">
+
+    <p>Tags:&emsp;{% for tag in question_tags %}
+        <button>{{ tag.name }}</button>
+        <a href="{{ url_for('delete_tag', question_id=question_id, tag_id=tag.id) }}">x</a>&emsp;
+    {% endfor %}
+    <button><a href="{{ url_for('tag_question', question_id=question_id) }}">Add a new tag</a></button>
+{#    <form action="{{ url_for('tag_question', question_id=question_id) }}">#}
+{#        <input type="submit" value="Add a new tag"/>#}
+{#    </form>#}
+    </p>
+
     <br>
     <table cellpadding="5">
         {% if answer_data==[] %}
