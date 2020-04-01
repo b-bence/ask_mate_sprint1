@@ -289,3 +289,28 @@ def add_tag_to_question(cursor: RealDictCursor, question_id, tag_id):
         pass
 
 
+@database_common.connection_handler
+def new_comment_for_question(cursor: RealDictCursor, question_id: int, message: str, submission_time: str):
+    query = """
+        INSERT INTO comment (question_id, message, submission_time)
+        VALUES (%(question_id)s, %(message)s, %(submission_time)s);"""
+    cursor.execute(query, {'question_id': question_id, 'message': message, 'submission_time': submission_time})
+
+
+@database_common.connection_handler
+def new_comment_for_answer(cursor: RealDictCursor, answer_id: int, message: str, submission_time: str):
+    query = """
+        INSERT INTO comment (answer_id, message, submission_time)
+        VALUES (%(answer_id)s, %(message)s, %(submission_time)s);"""
+    cursor.execute(query, {'answer_id': answer_id, 'message': message, 'submission_time': submission_time})
+
+
+@database_common.connection_handler
+def get_question_id_by_answer(cursor: RealDictCursor, answer_id: int):
+    query = """
+        SELECT question_id
+        FROM answer
+        WHERE id = %(answer_id)s"""
+    cursor.execute(query, {'answer_id': answer_id})
+    [data] = cursor.fetchall()
+    return data['question_id']

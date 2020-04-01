@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for
 import data_handler
 import os
 
@@ -187,6 +187,27 @@ def delete(item_id, is_question):
     else:
         data_handler.delete_answer(item_id)
     return redirect('/list')
+
+
+@app.route('/question/<question_id>/new-comment', methods=['GET', 'POST'])
+def add_comment_to_question(question_id):
+    if request.method == 'POST':
+        comment = request.form['comment']
+        submission_time = data_handler.current_time()
+        data_handler.new_comment_for_question(question_id, comment, submission_time)
+        return redirect(f'/question/{question_id}')
+    return render_template('new_comment.html', action=f'/question/{question_id}/new-comment')
+
+
+@app.route('/answer/<answer_id>/new-comment', methods=['GET', 'POST'])
+def add_comment_to_answer(answer_id):
+    if request.method == 'POST':
+        comment = request.form['comment']
+        submission_time = data_handler.current_time()
+        data_handler.new_comment_for_answer(answer_id, comment, submission_time)
+        question_id = data_handler.get_question_id_by_answer(answer_id)
+        return redirect(f'/question/{question_id}')
+    return render_template('new_comment.html', action=f'/answer/{answer_id}/new-comment')
 
 
 if __name__ == "__main__":
