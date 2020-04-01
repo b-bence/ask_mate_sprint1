@@ -324,3 +324,12 @@ def delete_tag(cursor: RealDictCursor, question_id, tag_id):
         AND tag_id = %(tag_id)s
     """
     cursor.execute(query, {'question_id': question_id, 'tag_id': tag_id})
+
+
+def get_comments(cursor: RealDictCursor) -> list:
+    query = """
+        SELECT *
+        FROM comment
+        ORDER BY submission_time"""
+    cursor.execute(query)
+    return cursor.fetchall()

@@ -79,13 +79,14 @@ def id(question_id):
     question_tags = data_handler.get_question_tags(question_id)
     answers = data_handler.get_answers(question_id)
     question_data = data_handler.get_single_question(question_id)
+    comments = data_handler.get_comments()
 
     if request.method == 'GET':
         new_view_number = data_handler.get_views(question_id) + 1
         data_handler.update_question_view_number(new_view_number, question_id)
 
     return render_template('display_question.html', question_id=question_id, question_data=question_data,
-                           answer_data=answers, question_tags=question_tags)
+                           answer_data=answers, question_tags=question_tags, comments=comments)
 
 
 @app.route('/question/<question_id>/new-tag', methods=['GET', 'POST'])
