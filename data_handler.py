@@ -324,3 +324,11 @@ def get_comments(cursor: RealDictCursor) -> list:
         ORDER BY submission_time"""
     cursor.execute(query)
     return cursor.fetchall()
+
+
+@database_common.connection_handler
+def delete_answer_comments(cursor: RealDictCursor, answer_id: int):
+    query = """
+        DELETE FROM comment
+        WHERE answer_id = %(answer_id)s"""
+    cursor.execute(query, {'answer_id': answer_id})
