@@ -212,6 +212,12 @@ def add_comment_to_answer(answer_id):
     return render_template('new_comment.html', action=f'/answer/{answer_id}/new-comment')
 
 
+@app.route('/question/<question_id>/tag/<tag_id>/delete')
+def delete_tag(question_id, tag_id):
+    data_handler.delete_tag(question_id, tag_id)
+    return redirect(f'/question/{question_id}')
+
+
 if __name__ == "__main__":
     app.run(
         debug='true',
