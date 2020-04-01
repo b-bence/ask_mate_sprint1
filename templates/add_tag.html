@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add tag</title>
+</head>
+<body>
+    <header>
+        <h1>Add a new tag</h1>
+    </header>
+    <form action='/question/{{ question_id }}/new-tag' method="POST">
+
+        <label for="new_tag">Add a new tag: </label><br>
+        <input id="new_tag" name="new_tag" type="text"><br><br>
+        <button type="submit">Add tag to taglist</button>
+    </form>
+    <form action='/question/{{ question_id }}/new-tag' method="POST">
+        <select multiple name="tags" size="10">
+            {% for tag in all_tags %}
+            <option value={{ tag.name }} name={{ tag.name }}>{{ tag.name }}</option>
+            {% endfor %}
+        </select>
+        <br><br>
+        <button type="submit">Add tag</button>
+    </form>
+</body>
+</html>

@@ -75,6 +75,8 @@ def edit(question_id):
 
 @app.route('/question/<question_id>', methods=['GET', 'POST'])
 def id(question_id):
+    all_tags = data_handler.get_all_tags()
+    question_tags = data_handler.get_question_tags(question_id)
     answers = data_handler.get_answers(question_id)
     question_data = data_handler.get_single_question(question_id)
 
@@ -82,7 +84,28 @@ def id(question_id):
         new_view_number = data_handler.get_views(question_id) + 1
         data_handler.update_question_view_number(new_view_number, question_id)
 
-    return render_template('display_question.html', question_id=question_id, question_data=question_data, answer_data=answers)
+    return render_template('display_question.html', question_id=question_id, question_data=question_data,
+                           answer_data=answers, question_tags=question_tags)
+
+
+@app.route('/question/<question_id>/new-tag', methods=['GET', 'POST'])
+def tag_question(question_id):
+    all_tags = data_handler.get_all_tags()
+    tag_names = [x['name'] for x in all_tags]
+    if request.method == 'POST':
+        try:
+            if request.form['new_tag'] not in tag_names:
+                tag_name = request.form['new_tag']
+                new_id = data_handler.get_max_tag_id() + 1
+                data_handler.add_new_tag_to_list(new_id, tag_name)
+                return redirect(f'/question/{question_id}/new-tag')
+        except KeyError:
+            tags = request.form.getlist('tags')
+            for tag in tags:
+                tag_id = data_handler.get_tag_id(tag)
+                data_handler.add_tag_to_question(question_id, tag_id)
+            return redirect(f'/question/{question_id}')
+    return render_template('add_tag.html', all_tags=all_tags, question_id=question_id)
 
 
 @app.route('/answer/<answer_id>/edit', methods=['GET', 'POST'])
@@ -120,7 +143,7 @@ def new_answer(question_id):
 
         return redirect(f'/question/{question_id}')
     return render_template('new-answer.html', question_data=question_data, question_id=question_id, todo='Add',
-                           action_text=f'/question/{question_id}/new-answer')
+                           action_text=f'/question/{question_id}/new-answer', answer_data=None)
 
 
 @app.route('/question/<question_id>/vote_up')

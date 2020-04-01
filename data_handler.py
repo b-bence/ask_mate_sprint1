@@ -223,3 +223,69 @@ def update_answer(cursor: RealDictCursor, id: int, message: str):
         WHERE id = %(id)s
     """
     cursor.execute(query, {'id':id, 'message': message})
+
+
+@database_common.connection_handler
+def get_all_tags(cursor: RealDictCursor):
+    query = """
+        SELECT * FROM tag
+    """
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_tag_id(cursor: RealDictCursor, name):
+    query = """
+        SELECT id 
+        FROM tag
+        WHERE name = %(name)s
+    """
+    cursor.execute(query, {'name': name})
+    [tag_id] = cursor.fetchall()
+    return tag_id['id']
+
+
+@database_common.connection_handler
+def get_question_tags(cursor: RealDictCursor, id) ->list:
+    query = """
+        SELECT A.*
+        FROM tag A
+        WHERE A.id IN (SELECT B.tag_id from question_tag B WHERE B.question_id = %(input)s)
+    """
+    cursor.execute(query, {'input':id})
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_max_tag_id(cursor: RealDictCursor):
+    query = """
+        SELECT MAX(id)
+        FROM tag
+    """
+    cursor.execute(query)
+    [max_value] = cursor.fetchall()
+    return max_value['max']
+
+
+@database_common.connection_handler
+def add_new_tag_to_list(cursor: RealDictCursor, id, name):
+    query="""
+        INSERT INTO tag
+        VALUES (%(id)s, %(name)s)
+    """
+    cursor.execute(query, {'id': id, 'name': name})
+
+
+@database_common.connection_handler
+def add_tag_to_question(cursor: RealDictCursor, question_id, tag_id):
+    query="""
+        INSERT INTO question_tag
+        VALUES (%(question_id)s, %(tag_id)s)
+    """
+    try:
+        cursor.execute(query, {'question_id': question_id, 'tag_id': tag_id})
+    except:
+        pass
+
+

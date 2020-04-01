@@ -15,16 +15,22 @@
         <tr align="center">
                 <td>{{ question_data.title }}</td>
                 <td>{{ question_data.message }}</td>
-                <td>{{ question_data.vote_nymber }}</td>
+                <td>{{ question_data.vote_number }}</td>
             <form action="/question/{{question_data.id}}/vote_up">
                 <td>&emsp;&emsp;<input type="submit" value="vote up"/></td>
             </form>
-            <form action="/question/{{question_data["id"]}}/vote_down">
+            <form action="/question/{{question_data.id}}/vote_down">
                 <td><input type="submit" value="vote down"/></td>
             </form>
                 <form action="/question/{{question_id}}/edit">
                     <td><input type="submit" value="Edit"/></td>
                 </form>
+        </tr>
+        <tr>
+            <td>Tags: {% for tag in question_tags %} {{ tag.name }} {% endfor %}</td>
+            <form action="{{ url_for('tag_question', question_id=question_id) }}">
+                    <td><input type="submit" value="Add a new tag"/></td>
+            </form>
         </tr>
     </table>
     <br>
@@ -40,10 +46,10 @@
         {% for answer in answer_data %}
         <tr>
            <th> Answer: </th>
-                <td>{{ answer['message'] }}</td>
+                <td>{{ answer.message }}</td>
                 <td><img alt="" width='150' height='150' src="{{ url_for('static', filename=answer['submission_time']) }}"></td>
 
-                <td>&emsp;&emsp;&emsp;&emsp;Vote number:&emsp;&emsp;{{ answer['vote_number'] }}</td>
+                <td>&emsp;&emsp;&emsp;&emsp;Vote number:&emsp;&emsp;{{ answer.vote_number }}</td>
 
                 <form action="/answer/{{answer.id}}/vote_up">
                     <td>&emsp;&emsp;<input type="submit" value="vote up"/></td>
