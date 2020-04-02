@@ -5,9 +5,11 @@ import os
 app = Flask(__name__)
 APP_ROUTE = os.path.dirname(os.path.abspath(__file__))
 
+
 @app.route("/")
 def main_page():
-    return render_template('main_page.html')
+    questions = data_handler.get_latest_questions()
+    return render_template('main_page.html', questions=questions)
 
 
 @app.route("/list")

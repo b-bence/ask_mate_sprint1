@@ -396,3 +396,14 @@ def get_question_id_by_comment(cursor: RealDictCursor, comment_id):
         answer_id = sec_data['answer_id']
         question_id = get_question_id_by_answer(answer_id)
     return question_id
+
+
+@database_common.connection_handler
+def get_latest_questions(cursor: RealDictCursor) -> list:
+    query = """
+        SELECT *
+        FROM question
+        ORDER BY submission_time DESC
+        LIMIT 5;"""
+    cursor.execute(query)
+    return cursor.fetchall()
