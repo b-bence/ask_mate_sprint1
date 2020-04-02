@@ -88,6 +88,16 @@
                         <tr>
                             <td>{{ comment.message }}</td>
                             <td>{{ comment.submission_time }}</td>
+                            <td>
+                                <form action="/comments/{{comment.id}}/delete">
+                                    <button type="submit">Delete</button>
+                                </form>
+                            </td>
+                            <td>
+                                <form action="/comment/{{comment.id}}/edit">
+                                    <button type="submit">Edit</button>
+                                </form>
+                            </td>
                         </tr>
                     {% endif %}
                 {% endfor %}
@@ -115,6 +125,16 @@
                         <tr>
                             <td>{{ comment.message }}</td>
                             <td>{{ comment.submission_time }}</td>
+                            <td>
+                                <form action="/comments/{{comment.id}}/delete">
+                                    <button type="submit">Delete</button>
+                                </form>
+                            </td>
+                            <td>
+                                <form action="/comment/{{comment.id}}/edit">
+                                    <button type="submit">Edit</button>
+                                </form>
+                            </td>
                         </tr>
                     {% endif %}
                 {% endfor %}

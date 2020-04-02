@@ -8,7 +8,8 @@ APP_ROUTE = os.path.dirname(os.path.abspath(__file__))
 
 @app.route("/")
 def main_page():
-    return render_template('main_page.html')
+    questions = data_handler.get_latest_questions()
+    return render_template('main_page.html', questions=questions)
 
 
 @app.route("/list")
@@ -203,7 +204,7 @@ def add_comment_to_question(question_id):
         submission_time = data_handler.current_time()
         data_handler.new_comment_for_question(question_id, comment, submission_time)
         return redirect(f'/question/{question_id}')
-    return render_template('new_comment.html', action=f'/question/{question_id}/new-comment')
+    return render_template('new_comment.html', action=f'/question/{question_id}/new-comment', title='Add comment')
 
 
 @app.route('/answer/<answer_id>/new-comment', methods=['GET', 'POST'])
@@ -214,13 +215,38 @@ def add_comment_to_answer(answer_id):
         data_handler.new_comment_for_answer(answer_id, comment, submission_time)
         question_id = data_handler.get_question_id_by_answer(answer_id)
         return redirect(f'/question/{question_id}')
-    return render_template('new_comment.html', action=f'/answer/{answer_id}/new-comment')
+    return render_template('new_comment.html', action=f'/answer/{answer_id}/new-comment', title='Add comment')
 
 
 @app.route('/question/<question_id>/tag/<tag_id>/delete')
 def delete_tag(question_id, tag_id):
     data_handler.delete_tag(question_id, tag_id)
     return redirect(f'/question/{question_id}')
+
+
+@app.route('/comments/<comment_id>/delete')
+def delete_comment(comment_id):
+    question_id = data_handler.get_question_id_by_comment(comment_id)
+    data_handler.delete_comment_by_id(comment_id)
+    return redirect(f'/question/{question_id}')
+
+
+@app.route('/comment/<comment_id>/edit', methods=['GET', 'POST'])
+def edit_comment(comment_id):
+    comment = data_handler.get_comment_by_id(comment_id)
+    edited_count = comment['edited_count']
+    if request.method == 'POST':
+        message = request.form['comment']
+        if edited_count is None:
+            edited_count = 1
+        else:
+            edited_count += 1
+        question_id = data_handler.get_question_id_by_comment(comment_id)
+        data_handler.update_comment_by_id(comment_id, message, edited_count)
+        return redirect(f'/question/{question_id}')
+
+    return render_template('new_comment.html', action=f'/comment/{comment_id}/edit',
+                           title='Edit comment', input_value=comment["message"])
 
 
 if __name__ == "__main__":

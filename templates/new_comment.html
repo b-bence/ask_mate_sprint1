@@ -2,12 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Add comment</title>
+    <title>{{ title }}</title>
 </head>
 <body>
-    <h1>Add comment</h1>
+    <h1>{{ title }}</h1>
     <form action="{{ action }}" method="post">
-        <input type="text" name="comment">
+        <label>
+            <textarea name="comment" rows="5" cols="30">{{ input_value }}</textarea>
+        </label><br>
+{#        <input type="text" name="comment" value="{{ input_value }}">#}
         <button type="submit">Ok</button>
     </form>
 </body>

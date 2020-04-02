@@ -374,5 +374,60 @@ def delete_answer_comments(cursor: RealDictCursor, answer_id: int):
 
 
 @database_common.connection_handler
-def delete_question_comments(cursor: RealDictCursor):
-    pass
+def get_comment_by_id(cursor: RealDictCursor, comment_id: int):
+    query = """
+        SELECT *
+        FROM comment
+        WHERE id = %(comment_id)s;"""
+    cursor.execute(query, {'comment_id': comment_id})
+    [data] = cursor.fetchall()
+    return data
+
+
+@database_common.connection_handler
+def delete_comment_by_id(cursor: RealDictCursor, comment_id: int):
+    query = """
+            DELETE FROM comment
+            WHERE id = %(comment_id)s"""
+    cursor.execute(query, {'comment_id': comment_id})
+
+
+@database_common.connection_handler
+def update_comment_by_id(cursor: RealDictCursor, comment_id: int, message: str, edited_count: int):
+    query = """
+        UPDATE comment
+        SET message = %(message)s, edited_count = %(edited_count)s
+        WHERE id = %(comment_id)s"""
+    cursor.execute(query, {'message': message, 'edited_count': edited_count, 'comment_id': comment_id})
+
+
+@database_common.connection_handler
+def get_question_id_by_comment(cursor: RealDictCursor, comment_id):
+    query = """
+        SELECT question_id
+        FROM comment
+        WHERE id = %(comment_id)s;"""
+    cursor.execute(query, {'comment_id': comment_id})
+    [data] = cursor.fetchall()
+    question_id = data['question_id']
+    if question_id is None:
+        sec_query = """
+            SELECT answer_id
+            FROM comment
+            WHERE id = %(comment_id)s;"""
+        cursor.execute(sec_query, {'comment_id': comment_id})
+        [sec_data] = cursor.fetchall()
+        answer_id = sec_data['answer_id']
+        question_id = get_question_id_by_answer(answer_id)
+    return question_id
+
+
+@database_common.connection_handler
+def get_latest_questions(cursor: RealDictCursor) -> list:
+    query = """
+        SELECT *
+        FROM question
+        ORDER BY submission_time DESC
+        LIMIT 5;"""
+    cursor.execute(query)
+    return cursor.fetchall()

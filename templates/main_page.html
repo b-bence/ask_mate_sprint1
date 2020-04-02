@@ -7,6 +7,27 @@
 <body>
     Main page test<br>
     Go to question page: <a href="/list">Questions</a><br>
-    Add a question: <a href="/add-question">Add a question</a>
+    Add a question: <a href="/add-question">Add a question</a><br>
+    <br>
+    <table cellpadding="5">
+        <tr>
+            <th>Submission time</th>
+            <th>View number</th>
+            <th>Vote number</th>
+            <th>Title</th>
+            <th>Message</th>
+        </tr>
+        {% for row in questions %}
+            <tr>
+                <td>{{ row.submission_time }}</td>
+                <td>{{ row.view_number }}</td>
+                <td>{{ row.vote_number }}</td>
+                <td><a href="/question/{{ row.id }}">{{ row.title }}</a></td>
+                <td>{{ row.message }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    <br>
+    <a href="/list">All question</a>
 </body>
 </html>
