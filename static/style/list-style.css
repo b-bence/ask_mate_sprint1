@@ -36,7 +36,7 @@ nav{
     border-radius: 9px;
     margin: 0 20px;
     vertical-align: middle;
-    width: 75%;
+    width: 70%;
 }
 
 
@@ -51,7 +51,7 @@ nav{
     margin: 0;
     padding: 0;
     height: auto;
-    width: 95%;
+    width: 85%;
 }
 
 .search_icon{
@@ -70,7 +70,7 @@ nav{
 #add_question_div{
     vertical-align: top;
     display: inline-block;
-    width: 10%;
+    width: 15%;
     text-align: right;
 }
 
