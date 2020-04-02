@@ -1,0 +1,46 @@
+body{
+    background-color: lightcyan;
+    margin: 50px 15%;
+}
+
+table {
+    border: 1px solid lightskyblue;
+    border-radius: 10px;
+    background-color: #cbfafa;
+    width: 100%;
+    padding: 10px;
+}
+
+.answer_row td, th{
+    background-color:#c0f1f1;
+    border-radius: 5px;
+}
+
+.answer_row td:first-child{
+    text-align:left;
+    padding-left: 15px;
+}
+
+td{
+    text-align:center;
+}
+
+h2, h1{
+    text-align: center;
+}
+
+h2{
+    padding:15px;
+    border-top: 1px solid #c0f1f1;
+    margin: 0;
+}
+
+button, input{
+    border-radius: 5px;
+    background-color: #bce6e6;
+    border-color: #cbfafa;
+}
+
+#comment{
+    float: right;
+}
