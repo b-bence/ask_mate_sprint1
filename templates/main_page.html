@@ -3,11 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" type="text/css" href={{ url_for('static', filename='style/list-style.css')}}>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
     <h1>Main page</h1>
-    Go to question page: <a href="/list">Questions</a><br>
-    Add a question: <a href="/add-question">Add a question</a><br>
+    <header>
+        <nav>
+            <div id="project_name">AskMate</div>
+
+            <div id='search_bar_box'>
+
+                <form class='search_bar' action={{ url_for('search') }}>
+
+                    <button class="search_icon"><i class="fa fa-search"></i></button>
+                    <input class='search_bar_text' type="search" id="search_bar" name="search" required placeholder="Search for...">
+                </form>
+                <br>
+            </div>
+
+            <div id="add_question_div">
+                <button id="add_question" type="button"> <a class="links" href="/add-question">Add a question</a><br></button>
+            </div>
+        </nav>
+    </header>
     <br>
     <table cellpadding="5">
         <tr>
@@ -27,5 +46,9 @@
             </tr>
         {% endfor %}
     </table>
+    <hr>
+    <div id="footer">
+        <button> <a class="links" href={{ url_for('list') }}>Go to question page</a><br></button>
+    </div>
 </body>
 </html>
