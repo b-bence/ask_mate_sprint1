@@ -32,7 +32,7 @@
     </table>
     <br>
     <table cellpadding="5">
-        <tr><td></td><td><b>Comments</b></td><td></td></tr>
+        <tr><td></td><th><b>Comments</b></th><td></td></tr>
         {% for comment in comments %}
             {% if question_id|int == comment.question_id %}
                 <tr>
