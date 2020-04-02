@@ -4,16 +4,30 @@
     <meta charset="UTF-8">
     <title>Question list</title>
     <link rel="stylesheet" type="text/css" href={{ url_for('static', filename='style/list-style.css')}}>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
     <h1>Question list</h1>
-    <form class='search_bar' action={{ url_for('search') }}>
-        <label for="search_bar">Search bar: </label>
-        <input type="text" id="search_bar" name="search" required>
-        <button type="submit">Search</button>
-        <button><a href="{{ url_for('list') }}">Clear search results</a></button>
-    </form> <br>
+    <header>
+        <nav>
+            <div id="project_name">AskMate</div>
 
+            <div id='search_bar_box'>
+
+                <form class='search_bar' action={{ url_for('search') }}>
+
+                    <button class="search_icon"><i class="fa fa-search"></i></button>
+                    <input class='search_bar_text' type="search" id="search_bar" name="search" required placeholder="Search for...">
+                </form>
+                <br>
+            </div>
+
+            <div id="add_question_div">
+                <button id="add_question" type="button"> <a class="links" href="/add-question">Add a question</a><br></button>
+            </div>
+        </nav>
+
+    </header>
     <table>
         <tr align="center">
             {% for header in table_headers%}
@@ -66,7 +80,11 @@
 
     </table>
     <hr>
-    <p>Add a question: <a href="/add-question">Add a question</a><br></p>
-    <p> <a href={{ url_for('main_page') }}>Return to main page</a><br></p>
+    <div id="footer">
+        <button> <a class="links" href={{ url_for('main_page') }}>Return to main page</a><br></button>
+        {% if search_phrase %}
+        <button id='clear_search_results' type="button"><a href="{{ url_for('list') }}">Clear search results</a></button>
+        {% endif %}
+    </div>
 </body>
 </html>
