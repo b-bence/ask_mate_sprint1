@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Question page</title>
+    <link rel="stylesheet" type="text/css" href={{ url_for('static', filename='style/question_display.css')}}>
+
 </head>
 <body>
     <h1>Question</h1><br>
@@ -13,42 +15,23 @@
             <th> Vote number </th>
         </tr>
         <tr align="center">
-                <td>{{ question_data.title }}</td>
-                <td>{{ question_data.message }}</td>
-                <td>{{ question_data.vote_number }}</td>
+            <td>{{ question_data.title }}</td>
+            <td>{{ question_data.message }}</td>
+            <td>{{ question_data.vote_number }}</td>
+            <td><img alt="" width='100' src="{{ url_for('static', filename=question_data.submission_time|string + '.jpg') }}"></td>
             <form action="/question/{{question_data.id}}/vote_up">
                 <td><input type="submit" value="vote up"/></td>
             </form>
             <form action="/question/{{question_data.id}}/vote_down">
                 <td><input type="submit" value="vote down"/></td>
             </form>
-                <form action="/question/{{question_id}}/edit">
-                    <td><input type="submit" value="Edit"/></td>
-                </form>
-            <td>
-            </td>
-
+            <form action="/question/{{question_id}}/edit">
+                <td><input type="submit" value="Edit"/></td>
+            </form>
         </tr>
     </table>
-    <img alt="" width='150' height='150' src="{{ url_for('static', filename=question_data.submission_time|string + '.jpg') }}">
-
-    <p>Tags:&emsp;{% for tag in question_tags %}
-        <button>{{ tag.name }}</button>
-        <a href="{{ url_for('delete_tag', question_id=question_id, tag_id=tag.id) }}">x</a>&emsp;
-    {% endfor %}
-    <button><a href="{{ url_for('tag_question', question_id=question_id) }}">Add a new tag</a></button>
-{#    <form action="{{ url_for('tag_question', question_id=question_id) }}">#}
-{#        <input type="submit" value="Add a new tag"/>#}
-{#    </form>#}
-    </p><br>
-    <form action="/question/{{ question_id }}/new-comment">
-        <button type="submit">Add comment</button>
-    </form><br>
+    <br>
     <table cellpadding="5">
-            <tr>
-                <th>Comment</th>
-                <th>Submission time</th>
-            </tr>
                 {% for comment in comments %}
                     {% if question_id|int == comment.question_id %}
                         <tr>
@@ -64,9 +47,19 @@
                     {% endif %}
                 {% endfor %}
     </table>
-    <hr>
-
     <br>
+    <div>Tags:&emsp;{% for tag in question_tags %}
+        <button>{{ tag.name }}</button>
+        <a href="{{ url_for('delete_tag', question_id=question_id, tag_id=tag.id) }}">x</a>&emsp;
+    {% endfor %}
+    <button><a href="{{ url_for('tag_question', question_id=question_id) }}">Add a new tag</a></button>
+{#    <form action="{{ url_for('tag_question', question_id=question_id) }}">#}
+{#        <input type="submit" value="Add a new tag"/>#}
+{#    </form>#}
+    <form id="comment" action="/question/{{ question_id }}/new-comment">
+        <button type="submit">Add comment</button>
+    </form><br>
+    </div><br>
     <table cellpadding="5">
         {% if answer_data==[] %}
             <tr>
@@ -74,18 +67,16 @@
                 <td>No answer yet</td>
             </tr>
         {% endif %}
+        <h2> Answers: </h2>
         {% for answer in answer_data %}
-        <tr>
-           <th><h2> Answer: </h2></th>
-        </tr>
-            <tr>
+            <tr class="answer_row">
                 <td><b>{{ answer.message }}</b></td>
-                <td><img alt="" width='150' height='150' src="{{ url_for('static', filename=answer.submission_time|string + '.jpg') }}"></td>
+                <td><img alt="" width='150' src="{{ url_for('static', filename=answer.submission_time|string + '.jpg') }}"></td>
 
-                <td>&emsp;&emsp;&emsp;&emsp;Vote number:&emsp;&emsp;{{ answer.vote_number }}</td>
+                <td>Vote number: {{ answer.vote_number }}</td>
 
                 <form action="/answer/{{answer.id}}/vote_up">
-                    <td>&emsp;&emsp;<input type="submit" value="vote up"/></td>
+                    <td><input type="submit" value="vote up"/></td>
                 </form>
 
                 <form action="/answer/{{answer.id}}/vote_down">
@@ -103,11 +94,7 @@
                 <form action="/answer/{{answer.id}}/new-comment">
                     <td><input type="submit" value="Add comment"/></td>
                 </form>
-        </tr>
-        <tr>
-            <th><b>Comment</b></th>
-            <th><b>Submission time</b></th>
-        </tr>
+            </tr>
             {% for comment in comments %}
                 {% if answer.id == comment.answer_id %}
                     <tr>
@@ -123,15 +110,13 @@
                 {% endif %}
             {% endfor %}
         {% endfor %}
-    </table>
-    <hr>
-    <br>
-    <form action="/question/{{question_id}}/new-answer">
-        <input type="submit" value="Add an answer" />
-    </form><br>
-    <form action="/question/{{question_id}}&{{ true }}/delete">
-        <input type="submit" value="Delete question" />
-    </form><br>
-    <a href="/list"> Return to questions</a><br><br>
+    </table><br>
+    <div>
+        <form>
+            <button type="submit" formaction="/question/{{question_id}}/new-answer">Add an answer</button>
+            <button id="comment" type="submit" formaction="/question/{{question_id}}&{{ true }}/delete">Delete question</button>
+        </form>
+    </div><br>
+    <button><a href="/list"> Return to questions</a></button>
 </body>
 </html>
