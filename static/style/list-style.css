@@ -1,21 +1,103 @@
 body {
-    background-color: #e3dac9;
+    background-color: white;
 }
 
 h1 {
-    color:red;
+    color: #4e4376;
+    text-align: center;
+}
+
+nav{
+    text-align: left;
 }
 
 .search_bar{
-    horiz-align: center;
-    border-color: #3A7734;
-    border-width: 5px;
-    border-style: solid;
+    text-align: left;
+    background-color: #f3f4f5;
+    border-radius: 9px;
+}
+
+#project_name{
+    display: inline-block;
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: .4px;
+    color: #4e4376;
+    width: 10%;
+}
+
+#search_bar_box{
+    align-items: center;
+    justify-content: center;
+    display: inline-block;
+    color: #58647b;
+    background-color: transparent;
+    height: 54px;
+    border-radius: 9px;
+    margin: 0 20px;
+    vertical-align: middle;
+    width: 75%;
+}
+
+.search_bar_text {
+    color: #4e4376;
+    background-color: #f3f4f5;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 21px;
+    display: inline-block;
+    border: none;
+    margin: 0;
+    padding: 0;
+    height: auto;
+    width: 95%;
+}
+
+.search_icon{
+    display: inline-block;
+    border-radius: 9px 0 0 9px;
+}
+
+#clear_search_results{
+    vertical-align: top;
+}
+
+#add_question_div{
+    vertical-align: top;
+    display: inline-block;
+    width: 10%;
+    text-align: right;
+}
+
+button{
+    background: linear-gradient(135deg,#2b5876,#4e4376);
+    padding: 0 3px;
+    height: 42px;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: .4px;
+    box-shadow: none;
+    border-radius: 15px;
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    line-height: 36px;
+}
+button a{
+    text-decoration: none;
+    color: #fff;
 }
 
 table {
-    border-color: #3A7734;
-    border-width: 5px;
+    background-color: #f3f4f5;
     border-style: solid;
+    border-radius: 15px;
 }
 
+a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
