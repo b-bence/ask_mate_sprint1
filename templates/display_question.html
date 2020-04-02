@@ -32,20 +32,21 @@
     </table>
     <br>
     <table cellpadding="5">
-                {% for comment in comments %}
-                    {% if question_id|int == comment.question_id %}
-                        <tr>
-                            <td>{{ comment.message }}</td>
-                            <td>{{ comment.submission_time }}</td>
-                            <td>
-                                <form action="">
-                                    <button type="submit" formaction="/comments/{{comment.id}}/delete">Delete</button>
-                                    <button type="submit" formaction="/comment/{{comment.id}}/edit">Edit</button>
-                                </form>
-                            </td>
-                        </tr>
-                    {% endif %}
-                {% endfor %}
+        <tr><td></td><td><b>Comments</b></td><td></td></tr>
+        {% for comment in comments %}
+            {% if question_id|int == comment.question_id %}
+                <tr>
+                    <td>{{ comment.message }}</td>
+                    <td>{{ comment.submission_time }}</td>
+                    <td>
+                        <form action="">
+                            <button type="submit" formaction="/comments/{{comment.id}}/delete">Delete</button>
+                            <button type="submit" formaction="/comment/{{comment.id}}/edit">Edit</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endif %}
+        {% endfor %}
     </table>
     <br>
     <div>Tags:&emsp;{% for tag in question_tags %}
