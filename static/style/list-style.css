@@ -2,7 +2,7 @@ body {
     background-color: white;
 }
 
-h1 {
+h1, h3 {
     color: #4e4376;
     text-align: center;
 }
@@ -104,4 +104,33 @@ a {
 
 tr {
     /*color: white;*/
+}
+
+.input_data{
+
+}
+
+.short_form{
+    text-align: center;
+    padding: 50px;
+    border: grey 1px solid;
+    margin-left: 32%;
+    margin-right: 32%;
+    margin-top: 15px;
+    padding-bottom: 10px;
+    border-radius: 15px;
+    background-color: #f3f4f5;
+}
+
+#ok{
+    width: 50px;
+}
+
+#add_tag_button{
+    height: 42px;
+    font-size: 9px;
+}
+
+.upload{
+    margin-left: 90px;
 }

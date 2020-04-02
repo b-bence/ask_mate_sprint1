@@ -3,23 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <title>{{title_text}}</title>
+    <link rel="stylesheet" type="text/css" href={{ url_for('static', filename='style/list-style.css')}}>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
      <header>
         <h1>{{ title_text }}</h1>
     </header>
-
-    <form action="{{ action_text }}" method="POST" enctype="multipart/form-data">
-        <label for="title">Title:</label><br>
-        <input id="title" name="title" type="text" minlength="5" required value="{{ title }}"><br><br>
-
-        <label for="message">Question message:</label><br>
-        <input id="message" name="message" rows="5" cols="30" required value="{{ message }}"><br><br>
-
-        <label for="image" class="uploadButton"></label>
-        <input type="file" name="image" id="image"/><br><br>
-
-        <button type="submit">{{button_text}}</button>
-    </form>
+     <div class="short_form">
+        <form action="{{ action_text }}" method="POST" enctype="multipart/form-data">
+            <div class="input_data">
+            <label for="title">Title:</label><br>
+            <input class="input_text" id="title" name="title" type="text" minlength="5" required value="{{ title }}"><br><br>
+            </div>
+            <div class="input_data">
+            <label for="message">Question message:</label><br>
+            <input class="input_text" id="message" name="message" rows="5" cols="30" required value="{{ message }}"><br><br>
+            </div>
+            <label for="image" class="uploadButton"></label>
+            <input class='upload' type="file" name="image" id="image"/><br><br>
+            <button type="submit">{{button_text}}</button>
+        </form>
+    </div><br><br>
+    <button> <a class="links" href={{ url_for('main_page') }}>Return to main page</a><br></button>
 </body>
+
 </html>

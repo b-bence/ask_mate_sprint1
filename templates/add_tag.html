@@ -3,16 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Add tag</title>
+    <link rel="stylesheet" type="text/css" href={{ url_for('static', filename='style/list-style.css')}}>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
     <header>
         <h1>Add a new tag</h1>
     </header>
+    <div class="short_form">
     <form action='/question/{{ question_id }}/new-tag' method="POST">
 
         <label for="new_tag">Add a new tag: </label><br>
         <input id="new_tag" name="new_tag" type="text"><br><br>
-        <button type="submit">Add tag to taglist</button>
+        <button id='add_tag_button' type="submit">Add tag to taglist</button><br><br>
     </form>
     <form action='/question/{{ question_id }}/new-tag' method="POST">
         <select multiple name="tags" size="10">
@@ -23,5 +26,7 @@
         <br><br>
         <button type="submit">Add tag</button>
     </form>
+    </div>
+<button> <a class="links" href={{ url_for('main_page') }}>Return to main page</a><br></button>
 </body>
 </html>
