@@ -10,7 +10,9 @@
         <label for="search_bar">Search bar: </label>
         <input type="text" id="search_bar" name="search" required>
         <button type="submit">Search</button>
-    </form><br>
+        <button><a href="{{ url_for('list') }}">Clear search results</a></button>
+    </form> <br>
+
     <table cellpadding="5">
         <tr align="center">
             {% for header in table_headers%}
@@ -23,20 +25,46 @@
             </th>
             {% endfor %}
         </tr>
-        {% for row in questions%}
-        <tr align="center">
-            {% for element in row %}
-                {% if element=="id" %}
-                {% elif element=="title" %}
-                    <td><a href='/question/{{ row["id"] }}'>{{ row[element] }}</a></td>
+        {% for question in questions%}
+
+            <tr align="center">
+                <td>{{ question.submission_time }}</td>
+                <td>{{ question.view_number }}</td>
+                <td>{{ question.vote_number }}</td>
+
+                {% autoescape off %}
+                {% if search_phrase and search_phrase in question.title %}
+                    <td><a href='/question/{{ question.id }}'>{{ question.title.replace(search_phrase, replace_to) }}</a></td>
                 {% else %}
-                    <td>{{ row[element] }}</td>
+                     <td><a href='/question/{{ question.id }}'>{{ question.title }}</a></td>
                 {% endif %}
-            {% endfor %}
-        </tr>
+
+                {% if search_phrase and search_phrase in question.message %}
+                    <td>{{ question.message.replace(search_phrase, replace_to) }}</td>
+                {% else %}
+                     <td>{{ question.message }}</td>
+                {% endif %}
+                {% endautoescape %}
+            </tr>
+            {% if answer_message %}
+            <tr>
+                {% autoescape off %}
+                {% if answer_message[loop.index0].message not in question.message and
+                    answer_message[loop.index0].message not in question.title%}
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td align="left">Search result found in the answers:
+                        {{ answer_message[loop.index0].message.replace(search_phrase, replace_to) }}</td>
+                 {% endif %}
+                {% endautoescape %}
+            </tr>
+            {% endif %}
         {% endfor %}
+
     </table>
     <hr>
-    Add a question: <a href="/add-question">Add a question</a><br>
+    <p>Add a question: <a href="/add-question">Add a question</a><br></p>
 </body>
 </html>

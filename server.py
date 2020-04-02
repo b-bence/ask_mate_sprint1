@@ -5,6 +5,7 @@ import os
 app = Flask(__name__)
 APP_ROUTE = os.path.dirname(os.path.abspath(__file__))
 
+
 @app.route("/")
 def main_page():
     return render_template('main_page.html')
@@ -27,10 +28,14 @@ def list(header=None, direction=None):
 def search():
     search_phrase = request.args.get('search')
     table_headers = data_handler.question_table_headers[1:-1]
+
     if search_phrase:
         question_details = data_handler.search(search_phrase)
+        replace_to = f'<span style="background-color: yellow;">{search_phrase}</span>'
+        answer_message = data_handler.fancy_search(search_phrase)
 
-    return render_template('list.html', questions=question_details, table_headers=table_headers)
+    return render_template('list.html', questions=question_details, table_headers=table_headers,
+                           search_phrase=search_phrase, replace_to=replace_to, answer_message=answer_message)
 
 
 @app.route("/add-question", methods=['GET', 'POST'])

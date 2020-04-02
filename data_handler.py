@@ -108,6 +108,17 @@ def get_answers(cursor: RealDictCursor, id) -> list:
 
 
 @database_common.connection_handler
+def get_answer_message(cursor: RealDictCursor, search_phrase) -> list:
+    query = """
+        SELECT message
+        FROM answer
+        WHERE message ILIKE %(search_phrase)s
+    """
+    cursor.execute(query, {'search_phrase': '%' + search_phrase + '%'})
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
 def update_question_view_number(cursor: RealDictCursor, num, id):
     sql = """
             UPDATE question
@@ -207,8 +218,21 @@ def search(cursor: RealDictCursor, input):
         OR A.id IN (SELECT B.question_id from answer B WHERE message ILIKE %(input)s)
     """
     cursor.execute(query, {'input': '%' + input + '%'})
-    vote_num_data = cursor.fetchall()
-    return vote_num_data
+    search_data = cursor.fetchall()
+    return search_data
+
+
+@database_common.connection_handler
+def fancy_search(cursor: RealDictCursor, input):
+    query = """
+        SELECT message, question_id
+        FROM answer
+        WHERE message ILIKE %(input)s
+        AND %(input)s NOT IN(SELECT title FROM question) AND %(input)s NOT IN(SELECT message FROM question)
+    """
+    cursor.execute(query, {'input':'%' + input + '%'})
+    search_data = cursor.fetchall()
+    return search_data
 
 
 @database_common.connection_handler
