@@ -1,0 +1,21 @@
+body {
+    background-color: #e3dac9;
+}
+
+h1 {
+    color:red;
+}
+
+.search_bar{
+    horiz-align: center;
+    border-color: #3A7734;
+    border-width: 5px;
+    border-style: solid;
+}
+
+table {
+    border-color: #3A7734;
+    border-width: 5px;
+    border-style: solid;
+}
+
