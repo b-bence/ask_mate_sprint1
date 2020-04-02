@@ -61,7 +61,7 @@
                 {% endautoescape %}
             </tr>
             {% if answer_message %}
-            <tr>
+            <tr id="show_comment_in_question_list">
                 {% autoescape off %}
                 {% if answer_message[loop.index0].message not in question.message and
                     answer_message[loop.index0].message not in question.title%}

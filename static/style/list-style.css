@@ -2,7 +2,7 @@ body {
     background-color: white;
 }
 
-h1, h3 {
+h1, h3, #question_answer {
     color: #4e4376;
     text-align: center;
 }
@@ -39,6 +39,7 @@ nav{
     width: 75%;
 }
 
+
 .search_bar_text {
     color: #4e4376;
     background-color: #f3f4f5;
@@ -57,6 +58,10 @@ nav{
     display: inline-block;
     border-radius: 9px 0 0 9px;
 }
+
+/*.icon{*/
+
+/*}*/
 
 #clear_search_results{
     vertical-align: top;
@@ -120,6 +125,10 @@ tr {
     padding-bottom: 10px;
     border-radius: 15px;
     background-color: #f3f4f5;
+}
+
+#show_comment_in_question_list{
+    background: white;
 }
 
 #ok{

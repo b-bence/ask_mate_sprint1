@@ -1,18 +1,22 @@
 body{
-    background-color: lightcyan;
-    margin: 50px 15%;
+    /*background-color: lightcyan;*/
+    background-color: white;
+    margin: 50px 12%;
 }
 
 table {
-    border: 1px solid lightskyblue;
+    /*border: 1px solid lightskyblue;*/
+    border: 1px solid grey;
     border-radius: 10px;
-    background-color: #cbfafa;
+    /*background-color: #cbfafa;*/
+    background-color: #f3f4f5;
     width: 100%;
     padding: 10px;
 }
 
 .answer_row td, th{
-    background-color:#c0f1f1;
+    /*background-color:#c0f1f1;*/
+    background: white;
     border-radius: 5px;
 }
 
@@ -31,7 +35,7 @@ h2, h1{
 
 h2{
     padding:15px;
-    border-top: 1px solid #c0f1f1;
+    /*border-top: 1px solid #f3f4f5;*/
     margin: 0;
 }
 
@@ -44,3 +48,4 @@ button, input{
 #comment{
     float: right;
 }
+
