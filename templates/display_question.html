@@ -53,6 +53,8 @@
         {% for answer in answer_data %}
         <tr>
            <th> Answer: </th>
+        </tr>
+            <tr>
                 <td>{{ answer.message }}</td>
                 <td><img alt="" width='150' height='150' src="{{ url_for('static', filename=answer['submission_time']) }}"></td>
 
@@ -78,31 +80,29 @@
                     <td><input type="submit" value="Add comment"/></td>
                 </form>
         </tr>
-        <table cellpadding="5">
-            <tr>
-                <td><b>Comment</b></td>
-                <td><b>Submission time</b></td>
-            </tr>
-                {% for comment in comments %}
-                    {% if answer.id == comment.answer_id %}
-                        <tr>
-                            <td>{{ comment.message }}</td>
-                            <td>{{ comment.submission_time }}</td>
-                            <td>
-                                <form action="/comments/{{comment.id}}/delete">
-                                    <button type="submit">Delete</button>
-                                </form>
-                            </td>
-                            <td>
-                                <form action="/comment/{{comment.id}}/edit">
-                                    <button type="submit">Edit</button>
-                                </form>
-                            </td>
-                        </tr>
-                    {% endif %}
-                {% endfor %}
+        <tr>
+            <th><b>Comment</b></th>
+            <th><b>Submission time</b></th>
+        </tr>
+            {% for comment in comments %}
+                {% if answer.id == comment.answer_id %}
+                    <tr>
+                        <td>{{ comment.message }}</td>
+                        <td>{{ comment.submission_time }}</td>
+                        <td>
+                            <form action="/comments/{{comment.id}}/delete">
+                                <button type="submit">Delete</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form action="/comment/{{comment.id}}/edit">
+                                <button type="submit">Edit</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endif %}
             {% endfor %}
-        </table>
+        {% endfor %}
     </table>
     <br>
     <form action="/question/{{question_id}}/new-answer">
@@ -110,7 +110,7 @@
     </form><br>
     <form action="/question/{{question_id}}&{{ true }}/delete">
         <input type="submit" value="Delete question" />
-    </form>
+    </form><br>
     <a href="/list"> Return to questions</a><br><br>
     <form action="/question/{{ question_id }}/new-comment">
         <button type="submit">Add comment</button>
