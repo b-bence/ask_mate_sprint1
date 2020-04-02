@@ -54,7 +54,8 @@ def add_question():
             filename = ".".join([str(submission), "jpg"])
             image.save("/".join([target, filename]))
 
-        data = {'id': id, 'submission': submission, 'view': view, 'vote': vote, 'title': title, 'message': message}
+        data = {'id': id, 'submission': submission, 'view': view, 'vote': vote,
+                'title': title, 'message': message, 'filename': filename}
         data_handler.write_question_data(data)
 
         return redirect(f'/question/{id}')

@@ -80,10 +80,10 @@ def generate_new_id(cursor: RealDictCursor, filename):
 def write_question_data(cursor: RealDictCursor, new_question):
     sql = """
         INSERT INTO question
-        VALUES (%s, %s, %s, %s, %s, %s);
+        VALUES (%s, %s, %s, %s, %s, %s, %s);
     """
     cursor.execute(sql, (new_question['id'], new_question['submission'], new_question['view'],
-                         new_question['vote'], new_question['title'], new_question['message']))
+                         new_question['vote'], new_question['title'], new_question['message'], new_question['filename']))
 
 
 @database_common.connection_handler
