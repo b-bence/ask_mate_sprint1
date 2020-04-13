@@ -1,4 +1,5 @@
 import csv
+import bcrypt
 from datetime import datetime
 from operator import itemgetter
 from psycopg2 import sql
@@ -10,6 +11,25 @@ csv_question_headers = ['id','submission_time','view_number','vote_number','titl
 csv_answer_headers = ['id','submission_time','vote_number', 'question_id','message','image']
 
 question_table_headers = ['ID', 'Submission time', 'View number', 'Vote number', 'Title', 'Message', 'Image']
+
+
+def hash_password(plain_text_password):
+    hashed_bytes = bcrypt.hashpw(plain_text_password.encode('utf-8'), bcrypt.gensalt())
+    return hashed_bytes.decode('utf-8')
+
+
+def verify_password(plain_text_password, hashed_password):
+    hashed_bytes_password = hashed_password.encode('utf-8')
+    return bcrypt.checkpw(plain_text_password.encode('utf-8'), hashed_bytes_password)
+
+
+@database_common.connection_handler
+def add_user(cursor: RealDictCursor, email, password, registration_date):
+    sql = """
+        INSERT INTO users(email, password, registration_date)
+        VALUES (%s, %s, %s)
+    """
+    cursor.execute(sql, (email, password, registration_date))
 
 
 def current_time():

@@ -250,6 +250,20 @@ def edit_comment(comment_id):
                            title='Edit comment', input_value=comment["message"])
 
 
+@app.route('/registration', methods=['GET', 'POST'])
+def registration():
+    title_text = 'Register new account'
+
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        hashed_password = data_handler.hash_password(password)
+        registration_date = data_handler.current_time()
+        data_handler.add_user(email,hashed_password, registration_date)
+        return redirect(url_for('main_page'))
+    return render_template('registration.html', title_text=title_text)
+
+
 if __name__ == "__main__":
     app.run(
         debug='true',

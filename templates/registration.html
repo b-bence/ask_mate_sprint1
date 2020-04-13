@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{title_text}}</title>
+    <link rel="stylesheet" type="text/css" href={{ url_for('static', filename='style/list-style.css')}}>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+     <header>
+        <h1>{{ title_text }}</h1>
+    </header>
+     <div class="short_form">
+        <form action="/registration" method="POST">
+            <div class="input_data">
+            <label for="email">Email:</label><br>
+            <input class="input_text" id="email" name="email" type="text" required><br><br>
+            </div>
+            <div class="input_data">
+            <label for="password">Password:</label><br>
+            <input class="input_text" id="password" name="password" minlength="5" required><br><br>
+            </div>
+            <button type="submit">Register</button>
+        </form>
+    </div><br><br>
+    <button> <a class="links" href={{ url_for('main_page') }}>Return to main page</a><br></button>
+</body>
+
+</html>
