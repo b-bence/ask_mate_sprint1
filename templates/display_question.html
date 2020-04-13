@@ -24,9 +24,11 @@
                 <br>
             </div>
 
+            {% if logged_in==True %}
             <div id="add_question_div">
                 <button id="add_question" type="button"> <a class="links" href="/add-question">Add a question</a><br></button>
             </div>
+            {% endif %}
         </nav>
     </header>
     <table cellpadding="5">
@@ -137,7 +139,9 @@
     </table><br>
     <div>
         <form>
-            <button type="submit" formaction="/question/{{question_id}}/new-answer">Add an answer</button>
+            {% if logged_in==True %}
+                <button type="submit" formaction="/question/{{question_id}}/new-answer">Add an answer</button>
+            {% endif %}
             <button id="comment" type="submit" formaction="/question/{{question_id}}&{{ true }}/delete">Delete question</button>
         </form>
     </div><br>

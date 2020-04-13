@@ -1,28 +1,36 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 import data_handler
 import os
 
 app = Flask(__name__)
 APP_ROUTE = os.path.dirname(os.path.abspath(__file__))
-
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 @app.route("/")
 def main_page():
     questions = data_handler.get_latest_questions()
+    if 'username' in session:
+        logged_in = True
+        user = session['username']
+        return render_template('main_page.html', questions=questions, logged_in=logged_in, user=user)
     return render_template('main_page.html', questions=questions)
 
 
 @app.route("/list")
 @app.route("/list<header>&<direction>")
 def list(header=None, direction=None):
+    if 'username' in session:
+        logged_in = True
+    else:
+        logged_in = False
     questions = data_handler.get_questions_data()
     table_headers = data_handler.question_table_headers[1:-1]
     if header not in data_handler.question_table_headers or direction not in ['asc', 'desc']:
-        return render_template('list.html', table_headers=table_headers, questions=questions)
+        return render_template('list.html', table_headers=table_headers, questions=questions, logged_in=logged_in)
     else:
         valid_header = header.replace(' ', '_').lower()
         sorted_questions = data_handler.sort_by(valid_header, direction)
-        return render_template('list.html', table_headers=table_headers, questions=sorted_questions)
+        return render_template('list.html', table_headers=table_headers, questions=sorted_questions, logged_in=logged_in)
 
 
 @app.route("/search")
@@ -92,8 +100,14 @@ def id(question_id):
         new_view_number = data_handler.get_views(question_id) + 1
         data_handler.update_question_view_number(new_view_number, question_id)
 
+    if 'username' in session:
+        logged_in = True
+    else:
+        logged_in = False
+
     return render_template('display_question.html', question_id=question_id, question_data=question_data,
-                           answer_data=answers, question_tags=question_tags, comments=comments)
+                           answer_data=answers, question_tags=question_tags, comments=comments,
+                           logged_in=logged_in)
 
 
 @app.route('/question/<question_id>/new-tag', methods=['GET', 'POST'])
@@ -262,6 +276,31 @@ def registration():
         data_handler.add_user(email,hashed_password, registration_date)
         return redirect(url_for('main_page'))
     return render_template('registration.html', title_text=title_text)
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    title_text = 'Login'
+
+    if request.method == 'POST':
+        email = request.form['email']
+        input_password = request.form['password']
+        correct_password = data_handler.get_user_password(email)
+        remove_list = 0
+        if correct_password \
+                and data_handler.verify_password(input_password, correct_password[remove_list]['password']):
+            session['username'] = email
+            return redirect(url_for('main_page'))
+        else:
+            error_message = "Wrong password or email!"
+            return render_template('login.html', title_text=title_text,error_message=error_message)
+    return render_template('login.html', title_text=title_text)
+
+
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    return redirect(url_for('main_page'))
 
 
 if __name__ == "__main__":

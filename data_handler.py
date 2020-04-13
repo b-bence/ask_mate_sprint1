@@ -32,6 +32,17 @@ def add_user(cursor: RealDictCursor, email, password, registration_date):
     cursor.execute(sql, (email, password, registration_date))
 
 
+@database_common.connection_handler
+def get_user_password(cursor:RealDictCursor, email):
+    sql = """
+        SELECT password FROM users
+        WHERE email = %(email)s
+    """
+    cursor.execute(sql,{'email':email})
+    data = cursor.fetchall()
+    return data
+
+
 def current_time():
     now = datetime.now()
     return now.strftime("%Y-%m-%d %H:%M:%S")

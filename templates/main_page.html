@@ -7,7 +7,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-    <h1>Main page</h1>
+    {% if logged_in %}
+        <h1>Main page - welcome {{ user }}</h1>
+    {% else %}
+        <h1>Main page</h1>
+    {% endif %}
     <header>
         <nav>
             <div id="project_name">AskMate</div>
@@ -21,10 +25,11 @@
                 </form>
                 <br>
             </div>
-
-            <div id="add_question_div">
-                <button id="add_question" type="button"> <a class="links" href="/add-question">Add a question</a><br></button>
-            </div>
+            {% if logged_in %}
+                <div id="add_question_div">
+                    <button id="add_question" type="button"> <a class="links" href="/add-question">Add a question</a><br></button>
+                </div>
+            {% endif %}
         </nav>
     </header>
     <br>
@@ -49,7 +54,13 @@
     <hr>
     <div id="footer">
         <button> <a class="links" href={{ url_for('list') }}>Go to question page</a><br></button>
-        <button> <a class="links" href={{ url_for('registration') }}>Create new account</a><br></button>
+        {% if logged_in %}
+            <button> <a class="links" href={{ url_for('logout') }}>Logout</a><br></button>
+        {% else %}
+            <button> <a class="links" href={{ url_for('registration') }}>Create new account</a><br></button>
+            <button> <a class="links" href={{ url_for('login') }}>Login</a><br></button>
+        {% endif %}
+
     </div>
 </body>
 </html>

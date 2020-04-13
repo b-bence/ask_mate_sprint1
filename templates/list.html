@@ -22,9 +22,11 @@
                 <br>
             </div>
 
+            {% if logged_in==True %}
             <div id="add_question_div">
                 <button id="add_question" type="button"> <a class="links" href="/add-question">Add a question</a><br></button>
             </div>
+            {% endif %}
         </nav>
     </header>
     <table>
