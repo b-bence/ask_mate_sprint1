@@ -98,7 +98,7 @@ def id(question_id):
     answers = data_handler.get_answers(question_id)
     question_data = data_handler.get_single_question(question_id)
     comments = data_handler.get_comments()
-
+    current_user = session['username']
     if request.method == 'GET':
         new_view_number = data_handler.get_views(question_id) + 1
         data_handler.update_question_view_number(new_view_number, question_id)
@@ -110,7 +110,7 @@ def id(question_id):
 
     return render_template('display_question.html', question_id=question_id, question_data=question_data,
                            answer_data=answers, question_tags=question_tags, comments=comments,
-                           logged_in=logged_in)
+                           logged_in=logged_in, current_user=current_user)
 
 
 @app.route('/question/<question_id>/new-tag', methods=['GET', 'POST'])
@@ -309,6 +309,12 @@ def login():
 def logout():
     session.pop('username', None)
     return redirect(url_for('main_page'))
+
+
+@app.route('/approve/<answer_id>')
+def approve(answer_id):
+    data_handler.approve(answer_id)
+    return redirect(request.referrer)
 
 
 if __name__ == "__main__":

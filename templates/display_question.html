@@ -77,9 +77,6 @@
         <a href="{{ url_for('delete_tag', question_id=question_id, tag_id=tag.id) }}"><button class='icon' type='submit' class="search_icon"><i class="fa fa-trash"></i></button></a>&emsp;
     {% endfor %}
     <button><a href="{{ url_for('tag_question', question_id=question_id) }}">Add a new tag</a></button>
-{#    <form action="{{ url_for('tag_question', question_id=question_id) }}">#}
-{#        <input type="submit" value="Add a new tag"/>#}
-{#    </form>#}
     <form id="comment" action="/question/{{ question_id }}/new-comment">
         <button type="submit">Add comment</button>
     </form><br>
@@ -94,18 +91,27 @@
         <h2 id="question_answer"> Answers: </h2>
         {% for answer in answer_data %}
             <tr class="answer_row">
-                <td><b>{{ answer.message }}</b></td>
-                <td><img alt="" width='150' src="{{ url_for('static', filename=answer.submission_time|string + '.jpg') }}"></td>
-
-                <td>Vote number: {{ answer.vote_number }}</td>
+                    <td><b>{{ answer.message }}</b></td>
+                    <td><img alt="" width='150' src="{{ url_for('static', filename=answer.submission_time|string + '.jpg') }}"></td>
+                    <td>Vote number: {{ answer.vote_number }}</td>
+                {% if answer.accepted==True %}
+                    <td><button class='icon' type='submit' class="search_icon"><i class="fa fa-check-square-o"></i></button></td>
+                {% else %}
+                    {% if answer.user_email == current_user %}
+                        <td><b>Not accepted yet - <a href={{ url_for('approve', answer_id = answer.id) }}>click here to accept</a></b></td>
+                        <form action="/answer/{{answer.id}}/vote_up">
+                            <td><button class='icon' type='submit' class="search_icon"></button></td>
+                        </form>
+                    {% else %}
+                        <td><b>Not accepted yet</b></td>
+                    {% endif %}
+                {% endif %}
 
                 <form action="/answer/{{answer.id}}/vote_up">
-{#                    <td><input type="submit" value="vote up" class="fa fa-thumbs-up"/></td>#}
                     <td><button class='icon' type='submit' class="search_icon"><i class="fa fa-thumbs-up"></i></button></td>
                 </form>
 
                 <form action="/answer/{{answer.id}}/vote_down">
-{#                    <td><input type="submit" value="vote down"/></td>#}
                     <td><button class='icon' type='submit' class="search_icon"><i class="fa fa-thumbs-down"></i></button></td>
                 </form>
 

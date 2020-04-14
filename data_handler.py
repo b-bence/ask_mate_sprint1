@@ -43,6 +43,17 @@ def get_user_data(cursor:RealDictCursor, email):
     return data
 
 
+@database_common.connection_handler
+def get_answer_data(cursor:RealDictCursor, email):
+    sql = """
+        SELECT * FROM answer
+        WHERE email = %(email)s
+    """
+    cursor.execute(sql,{'email':email})
+    data = cursor.fetchall()
+    return data
+
+
 def current_time():
     now = datetime.now()
     return now.strftime("%Y-%m-%d %H:%M:%S")
@@ -131,9 +142,13 @@ def write_answer_data(cursor: RealDictCursor, new_answer):
 @database_common.connection_handler
 def get_answers(cursor: RealDictCursor, id) -> list:
     query = """
-        SELECT *
-        FROM answer
-        WHERE question_id=%(id)s"""
+        SELECT 
+	        users.email user_email, 
+	        answer.*
+        FROM users
+        JOIN answer
+        ON users.id = answer.user_id
+        WHERE answer.question_id =%(id)s"""
     cursor.execute(query, {'id': id})
     answer = cursor.fetchall()
     return answer
@@ -463,3 +478,13 @@ def get_latest_questions(cursor: RealDictCursor) -> list:
         LIMIT 5;"""
     cursor.execute(query)
     return cursor.fetchall()
+
+
+@database_common.connection_handler
+def approve(cursor: RealDictCursor, id: int):
+    query = """
+        UPDATE answer
+        SET accepted = TRUE 
+        WHERE id= %(id)s
+    """
+    cursor.execute(query, {'id': id})
