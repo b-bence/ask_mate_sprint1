@@ -351,19 +351,19 @@ def add_tag_to_question(cursor: RealDictCursor, question_id, tag_id):
 
 
 @database_common.connection_handler
-def new_comment_for_question(cursor: RealDictCursor, question_id: int, message: str, submission_time: str):
+def new_comment_for_question(cursor: RealDictCursor, question_id: int, message: str, submission_time: str, user_id: int):
     query = """
-        INSERT INTO comment (question_id, message, submission_time)
-        VALUES (%(question_id)s, %(message)s, %(submission_time)s);"""
-    cursor.execute(query, {'question_id': question_id, 'message': message, 'submission_time': submission_time})
+        INSERT INTO comment (question_id, message, submission_time, user_id)
+        VALUES (%(question_id)s, %(message)s, %(submission_time)s, %(user_id)s);"""
+    cursor.execute(query, {'question_id': question_id, 'message': message, 'submission_time': submission_time, 'user_id': user_id})
 
 
 @database_common.connection_handler
-def new_comment_for_answer(cursor: RealDictCursor, answer_id: int, message: str, submission_time: str):
+def new_comment_for_answer(cursor: RealDictCursor, answer_id: int, message: str, submission_time: str, user_id: int):
     query = """
-        INSERT INTO comment (answer_id, message, submission_time)
-        VALUES (%(answer_id)s, %(message)s, %(submission_time)s);"""
-    cursor.execute(query, {'answer_id': answer_id, 'message': message, 'submission_time': submission_time})
+        INSERT INTO comment (answer_id, message, submission_time, user_id)
+        VALUES (%(answer_id)s, %(message)s, %(submission_time)s, %(user_id)s);"""
+    cursor.execute(query, {'answer_id': answer_id, 'message': message, 'submission_time': submission_time, 'user_id': user_id})
 
 
 @database_common.connection_handler
