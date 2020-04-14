@@ -225,7 +225,10 @@ def add_comment_to_question(question_id):
     if request.method == 'POST':
         comment = request.form['comment']
         submission_time = data_handler.current_time()
-        data_handler.new_comment_for_question(question_id, comment, submission_time)
+        user_data = data_handler.get_user_data(session['username'])
+        remove_list = 0
+        user_id = user_data[remove_list]['id']
+        data_handler.new_comment_for_question(question_id, comment, submission_time, user_id)
         return redirect(f'/question/{question_id}')
     return render_template('new_comment.html', action=f'/question/{question_id}/new-comment', title='Add comment')
 
@@ -235,7 +238,10 @@ def add_comment_to_answer(answer_id):
     if request.method == 'POST':
         comment = request.form['comment']
         submission_time = data_handler.current_time()
-        data_handler.new_comment_for_answer(answer_id, comment, submission_time)
+        user_data = data_handler.get_user_data(session['username'])
+        remove_list = 0
+        user_id = user_data[remove_list]['id']
+        data_handler.new_comment_for_answer(answer_id, comment, submission_time, user_id)
         question_id = data_handler.get_question_id_by_answer(answer_id)
         return redirect(f'/question/{question_id}')
     return render_template('new_comment.html', action=f'/answer/{answer_id}/new-comment', title='Add comment')
