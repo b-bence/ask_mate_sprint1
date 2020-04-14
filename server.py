@@ -56,6 +56,9 @@ def add_question():
         vote = 0
         title = request.form['title'].capitalize()
         message = request.form['message'].capitalize()
+        user_data = data_handler.get_user_data(session['username'])
+        remove_list = 0
+        user_id = user_data[remove_list]['id']
         if request.files:
             target = os.path.join(APP_ROUTE, 'static/')
             image = request.files['image']
@@ -63,7 +66,7 @@ def add_question():
             image.save("/".join([target, filename]))
 
         data = {'id': id, 'submission': submission, 'view': view, 'vote': vote,
-                'title': title, 'message': message, 'filename': filename}
+                'title': title, 'message': message, 'filename': filename, 'user_id': user_id}
         data_handler.write_question_data(data)
 
         return redirect(f'/question/{id}')
@@ -154,13 +157,18 @@ def new_answer(question_id):
         vote_number = 0
         question_id = question_id
         message = request.form['answer']
-        if request.files:
+        user_data = data_handler.get_user_data(session['username'])
+        remove_list = 0
+        user_id = user_data[remove_list]['id']
+        filename=None
+        if request.files and request.files['image']:
             target = os.path.join(APP_ROUTE, 'static/')
             image = request.files['image']
             filename = ".".join([str(submission_time), "jpg"])
             image.save("/".join([target, filename]))
 
-        data = {'id': id, 'submission': submission_time, 'vote': vote_number, 'question_id': question_id, 'message': message}
+        data = {'id': id, 'submission': submission_time, 'vote': vote_number, 'question_id': question_id,
+                'message': message, 'filename': filename, 'user_id': user_id}
         data_handler.write_answer_data(data)
 
         return redirect(f'/question/{question_id}')
@@ -285,7 +293,7 @@ def login():
     if request.method == 'POST':
         email = request.form['email']
         input_password = request.form['password']
-        correct_password = data_handler.get_user_password(email)
+        correct_password = data_handler.get_user_data(email)
         remove_list = 0
         if correct_password \
                 and data_handler.verify_password(input_password, correct_password[remove_list]['password']):

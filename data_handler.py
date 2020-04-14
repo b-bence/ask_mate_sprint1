@@ -33,9 +33,9 @@ def add_user(cursor: RealDictCursor, email, password, registration_date):
 
 
 @database_common.connection_handler
-def get_user_password(cursor:RealDictCursor, email):
+def get_user_data(cursor:RealDictCursor, email):
     sql = """
-        SELECT password FROM users
+        SELECT * FROM users
         WHERE email = %(email)s
     """
     cursor.execute(sql,{'email':email})
@@ -111,20 +111,21 @@ def generate_new_id(cursor: RealDictCursor, filename):
 def write_question_data(cursor: RealDictCursor, new_question):
     sql = """
         INSERT INTO question
-        VALUES (%s, %s, %s, %s, %s, %s, %s);
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s);
     """
     cursor.execute(sql, (new_question['id'], new_question['submission'], new_question['view'],
-                         new_question['vote'], new_question['title'], new_question['message'], new_question['filename']))
+                         new_question['vote'], new_question['title'], new_question['message'],
+                         new_question['filename'], new_question['user_id']))
 
 
 @database_common.connection_handler
 def write_answer_data(cursor: RealDictCursor, new_answer):
     sql = """
         INSERT INTO answer
-        VALUES (%s, %s, %s, %s, %s);
+        VALUES (%s, %s, %s, %s, %s, %s, %s);
     """
-    cursor.execute(sql, (new_answer['id'], new_answer['submission'],
-                         new_answer['vote'], new_answer['question_id'], new_answer['message']))
+    cursor.execute(sql, (new_answer['id'], new_answer['submission'],new_answer['vote'], new_answer['question_id'],
+                         new_answer['message'], new_answer['filename'], new_answer['user_id']))
 
 
 @database_common.connection_handler
