@@ -181,6 +181,9 @@ def question_vote_up(question_id):
     vote_num_data = data_handler.get_question_vote_count(question_id)
     new_vote_num = vote_num_data['vote_number'] + 1
     data_handler.update_question_vote_number(new_vote_num, question_id)
+    user_id = data_handler.get_question_user_id(question_id)
+    gained_points = 5
+    data_handler.update_reputation(gained_points, user_id)
     return redirect('/list')
 
 
@@ -189,6 +192,9 @@ def question_vote_down(question_id):
     vote_num_data = data_handler.get_question_vote_count(question_id)
     new_vote_num = vote_num_data['vote_number'] - 1
     data_handler.update_question_vote_number(new_vote_num, question_id)
+    user_id = data_handler.get_question_user_id(question_id)
+    gained_points = -2
+    data_handler.update_reputation(gained_points, user_id)
     return redirect('/list')
 
 
@@ -198,6 +204,9 @@ def answer_vote_up(answer_id):
     new_vote_num = vote_num_data['vote_number'] + 1
     question_id = vote_num_data['question_id']
     data_handler.update_answer_vote_number(new_vote_num, answer_id)
+    user_id = data_handler.get_answer_user_id(answer_id)
+    gained_points = 10
+    data_handler.update_reputation(gained_points, user_id)
     return redirect(f'/question/{question_id}')
 
 
@@ -207,6 +216,9 @@ def answer_vote_down(answer_id):
     new_vote_num = vote_num_data['vote_number'] - 1
     question_id = vote_num_data['question_id']
     data_handler.update_answer_vote_number(new_vote_num, answer_id)
+    user_id = data_handler.get_answer_user_id(answer_id)
+    gained_points = -2
+    data_handler.update_reputation(gained_points, user_id)
     return redirect(f'/question/{question_id}')
 
 
@@ -320,6 +332,9 @@ def logout():
 @app.route('/approve/<answer_id>')
 def approve(answer_id):
     data_handler.approve(answer_id)
+    user_id = data_handler.get_answer_user_id(answer_id)
+    gained_points = 15
+    data_handler.update_reputation(gained_points, user_id)
     return redirect(request.referrer)
 
 

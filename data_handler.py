@@ -488,3 +488,34 @@ def approve(cursor: RealDictCursor, id: int):
         WHERE id= %(id)s
     """
     cursor.execute(query, {'id': id})
+
+
+@database_common.connection_handler
+def get_question_user_id(cursor: RealDictCursor, question_id: int):
+    query = """
+        SELECT user_id
+        FROM question
+        WHERE id = %(question_id)s"""
+    cursor.execute(query, {'question_id': question_id})
+    [result] = cursor.fetchall()
+    return result['user_id']
+
+
+@database_common.connection_handler
+def get_answer_user_id(cursor: RealDictCursor, answer_id: int):
+    query = """
+        SELECT user_id
+        FROM answer
+        WHERE id = %(answer_id)s"""
+    cursor.execute(query, {'answer_id': answer_id})
+    [result] = cursor.fetchall()
+    return result['user_id']
+
+
+@database_common.connection_handler
+def update_reputation(cursor: RealDictCursor, gained_points: int, user_id: int):
+    query = """
+        UPDATE users
+        SET reputation = reputation + %(gained_points)s
+        WHERE id = %(user_id)s"""
+    cursor.execute(query, {'gained_points': gained_points, 'user_id': user_id})
