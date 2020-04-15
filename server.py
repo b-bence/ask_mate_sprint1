@@ -338,6 +338,11 @@ def approve(answer_id):
     return redirect(request.referrer)
 
 
+@app.route('/user/<user_id>')
+def user_page(user_Id):
+    pass
+
+
 if __name__ == "__main__":
     app.run(
         debug='true',
