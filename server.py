@@ -6,6 +6,7 @@ app = Flask(__name__)
 APP_ROUTE = os.path.dirname(os.path.abspath(__file__))
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
+
 @app.route("/")
 def main_page():
     questions = data_handler.get_latest_questions()
@@ -336,6 +337,12 @@ def approve(answer_id):
     gained_points = 15
     data_handler.update_reputation(gained_points, user_id)
     return redirect(request.referrer)
+
+
+@app.route('/tags')
+def tags():
+    tag_occurence = data_handler.tag_occurence()
+    return render_template('tags.html', tag_occurence=tag_occurence)
 
 
 if __name__ == "__main__":

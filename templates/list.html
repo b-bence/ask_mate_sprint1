@@ -83,6 +83,7 @@
     <hr>
     <div id="footer">
         <button> <a class="links" href={{ url_for('main_page') }}>Return to main page</a><br></button>
+        <button> <a class="links" href={{ url_for('tags') }}>Go to tags</a><br></button>
         {% if search_phrase %}
         <button id='clear_search_results' type="button"><a href="{{ url_for('list') }}">Clear search results</a></button>
         {% endif %}

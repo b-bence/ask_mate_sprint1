@@ -54,6 +54,7 @@
     <hr>
     <div id="footer">
         <button> <a class="links" href={{ url_for('list') }}>Go to question page</a><br></button>
+        <button> <a class="links" href={{ url_for('tags') }}>Go to tags</a><br></button>
         {% if logged_in %}
             <button> <a class="links" href={{ url_for('logout') }}>Logout</a><br></button>
         {% else %}

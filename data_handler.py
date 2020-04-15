@@ -519,3 +519,18 @@ def update_reputation(cursor: RealDictCursor, gained_points: int, user_id: int):
         SET reputation = reputation + %(gained_points)s
         WHERE id = %(user_id)s"""
     cursor.execute(query, {'gained_points': gained_points, 'user_id': user_id})
+
+
+@database_common.connection_handler
+def tag_occurence(cursor: RealDictCursor):
+    query = """
+        SELECT 
+            tag.name as tag_name,
+            COUNT(question_tag.question_id) as occurence
+        FROM tag
+        JOIN question_tag
+        ON tag.id = question_tag.tag_id
+        GROUP BY tag_name;
+    """
+    cursor.execute(query)
+    return cursor.fetchall()
