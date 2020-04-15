@@ -552,3 +552,13 @@ def list_user_data(cursor:RealDictCursor):
     """
     cursor.execute(query)
     return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_emails(cursor:RealDictCursor):
+    query = """
+        SELECT users.email
+        FROM users;
+    """
+    cursor.execute(query)
+    return cursor.fetchall()
