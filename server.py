@@ -345,6 +345,12 @@ def tags():
     return render_template('tags.html', tag_occurence=tag_occurence)
 
 
+@app.route('/users')
+def users():
+    user_data = data_handler.list_user_data()
+    return render_template('users.html', user_data=user_data)
+
+
 if __name__ == "__main__":
     app.run(
         debug='true',

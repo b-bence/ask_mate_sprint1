@@ -534,3 +534,21 @@ def tag_occurence(cursor: RealDictCursor):
     """
     cursor.execute(query)
     return cursor.fetchall()
+
+
+@database_common.connection_handler
+def list_user_data(cursor:RealDictCursor):
+    query = """
+        SELECT 
+            users.id,
+            users.email,
+            users.registration_date,
+            COUNT(question.id) as asked_questions,
+            users.reputation
+        FROM users
+        INNER JOIN question
+        ON users.id = question.user_id
+        GROUP BY users.id;
+    """
+    cursor.execute(query)
+    return cursor.fetchall()
