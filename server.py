@@ -61,9 +61,10 @@ def add_question():
         user_data = data_handler.get_user_data(session['username'])
         remove_list = 0
         user_id = user_data[remove_list]['id']
-        if request.files:
+        image = request.files['image']
+        filename = None
+        if str(image) != "<FileStorage: '' ('application/octet-stream')>":
             target = os.path.join(APP_ROUTE, 'static/')
-            image = request.files['image']
             filename = ".".join([str(submission), "jpg"])
             image.save("/".join([target, filename]))
 

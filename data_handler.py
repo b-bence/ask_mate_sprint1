@@ -1,5 +1,6 @@
 import csv
 import bcrypt
+import os
 from datetime import datetime
 from operator import itemgetter
 from psycopg2 import sql
@@ -245,15 +246,23 @@ def delete_question(cursor: RealDictCursor, question_id: int):
     answers = get_answers(question_id)
     for answer in answers:
         delete_answer_comments(answer['id'])
-    query = """
+    filename_query = """
+        SELECT image
+        FROM question
+        WHERE id = %(question_id)s"""
+
+    delete_query = """
         DELETE FROM comment
         WHERE question_id = %(question_id)s;
         DELETE FROM answer
         WHERE question_id = %(question_id)s;
         DELETE FROM question
         WHERE id = %(question_id)s;"""
-
-    cursor.execute(query, {'question_id': question_id})
+    cursor.execute(filename_query, {'question_id': question_id})
+    [temp_result] = cursor.fetchall()
+    filename = temp_result['image']
+    delete_image(filename)
+    cursor.execute(delete_query, {'question_id': question_id})
 
 
 @database_common.connection_handler
@@ -599,7 +608,6 @@ def get_user_activities(cursor:RealDictCursor, user_id: int) -> list:
     return question, answer, comment
 
 
-
 @database_common.connection_handler
 def get_emails(cursor:RealDictCursor):
     query = """
@@ -609,3 +617,8 @@ def get_emails(cursor:RealDictCursor):
     cursor.execute(query)
     return cursor.fetchall()
 
+
+def delete_image(filename):
+    path = f'static/{filename}'
+    if os.path.exists(path):
+        os.remove(path)
