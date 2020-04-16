@@ -24,13 +24,16 @@
                 <td>{{ user.id }}</td>
                 <td>{{ user.email }}</td>
                 <td>{{ user.registration_date }}</td>
+                <td>{{ user.asked_questions }}</td>
                 <td>{{ user.answer }}</td>
                 <td>{{ user.comment }}</td>
-                <td>{{ user.asked_questions }}</td>
                 <td>{{ user.reputation }}</td>
             </tr>
         {% endfor %}
     </table>
+    {% if questions %}
+        {% include 'user-page.html' %}
+    {% endif %}
     <button> <a class="links" href={{ url_for('main_page') }}>Return to main page</a><br></button>
 </body>
 </html>

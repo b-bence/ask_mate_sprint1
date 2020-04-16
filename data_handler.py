@@ -542,7 +542,7 @@ def tag_occurence(cursor: RealDictCursor):
 
 
 @database_common.connection_handler
-def list_user_data(cursor:RealDictCursor):
+def list_user_data(cursor:RealDictCursor, user_id=False):
     query = """
         SELECT 
             users.id,
@@ -558,11 +558,39 @@ def list_user_data(cursor:RealDictCursor):
         LEFT JOIN answer
             ON users.id = answer.user_id
         LEFT JOIN comment
-            ON users.id = comment.user_id
-        GROUP BY users.id;
-    """
+            ON users.id = comment.user_id"""
+    if user_id:
+        query += f"""
+            WHERE users.id={user_id}"""
+    query += """
+        GROUP BY users.id;"""
     cursor.execute(query)
     return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_user_activities(cursor:RealDictCursor, user_id: int) -> list:
+    id = {'user_id': user_id}
+    question_query = """
+        SELECT title AS question
+        FROM question
+        WHERE question.user_id = %(user_id)s"""
+    answer_query = """
+        SELECT message AS answer
+        FROM answer
+        WHERE answer.user_id = %(user_id)s"""
+    comment_query = """
+        SELECT message AS comment
+        FROM comment
+        WHERE comment.user_id = %(user_id)s"""
+    cursor.execute(question_query, id)
+    question = cursor.fetchall()
+    cursor.execute(answer_query, id)
+    answer = cursor.fetchall()
+    cursor.execute(comment_query, id)
+    comment = cursor.fetchall()
+    return question, answer, comment
+
 
 
 @database_common.connection_handler
