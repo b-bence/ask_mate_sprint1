@@ -54,13 +54,13 @@
     <hr>
     <div id="footer">
         <button> <a class="links" href={{ url_for('list') }}>Go to question page</a><br></button>
-        <button> <a class="links" href={{ url_for('tags') }}>Go to tags</a><br></button>
+        <button id="tags"> <a class="links" href={{ url_for('tags') }}>Go to tags</a><br></button>
         {% if logged_in %}
-            <button> <a class="links" href={{ url_for('logout') }}>Logout</a><br></button>
-            <button> <a class="links" href={{ url_for('users') }}>Check users</a><br></button>
+            <button id="users"> <a class="links" href={{ url_for('users') }}>Check users</a><br></button>
+            <button id="logout"> <a class="links" href={{ url_for('logout') }}>Logout</a><br></button>
         {% else %}
-            <button> <a class="links" href={{ url_for('registration') }}>Create new account</a><br></button>
-            <button> <a class="links" href={{ url_for('login') }}>Login</a><br></button>
+            <button id="registration"> <a class="links" href={{ url_for('registration') }}>Create new account</a><br></button>
+            <button id="login"> <a class="links" href={{ url_for('login') }}>Login</a><br></button>
         {% endif %}
 
     </div>
