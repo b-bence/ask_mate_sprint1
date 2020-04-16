@@ -14,8 +14,8 @@
             <th>User name</th>
             <th>Registration date</th>
             <th>Count of asked questions</th>
-{#            <th>Count of answers</th>#}
-{#            <th>Count of comments</th>#}
+            <th>Count of answers</th>
+            <th>Count of comments</th>
             <th>Reputation</th>
         </tr>
 
@@ -24,6 +24,8 @@
                 <td>{{ user.id }}</td>
                 <td>{{ user.email }}</td>
                 <td>{{ user.registration_date }}</td>
+                <td>{{ user.answer }}</td>
+                <td>{{ user.comment }}</td>
                 <td>{{ user.asked_questions }}</td>
                 <td>{{ user.reputation }}</td>
             </tr>

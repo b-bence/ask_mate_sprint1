@@ -544,10 +544,16 @@ def list_user_data(cursor:RealDictCursor):
             users.email,
             users.registration_date,
             COUNT(question.id) as asked_questions,
+            COUNT(distinct answer.id) as answer,
+	        COUNT(distinct comment.id) as comment,
             users.reputation
         FROM users
-        INNER JOIN question
-        ON users.id = question.user_id
+        LEFT JOIN question
+            ON users.id = question.user_id
+        LEFT JOIN answer
+            ON users.id = answer.user_id
+        LEFT JOIN comment
+            ON users.id = comment.user_id
         GROUP BY users.id;
     """
     cursor.execute(query)
