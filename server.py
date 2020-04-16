@@ -12,7 +12,8 @@ def main_page():
     if 'username' in session:
         logged_in = True
         user = session['username']
-        return render_template('main_page.html', questions=questions, logged_in=logged_in, user=user)
+        user_id = session['user_id']
+        return render_template('main_page.html', questions=questions, logged_in=logged_in, user=user, user_id=user_id)
     return render_template('main_page.html', questions=questions)
 
 
@@ -316,6 +317,7 @@ def login():
         if correct_password \
                 and data_handler.verify_password(input_password, correct_password[remove_list]['password']):
             session['username'] = email
+            session['user_id'] = correct_password[remove_list]['id']
             return redirect(url_for('main_page'))
         else:
             error_message = "Wrong password or email!"
@@ -326,6 +328,7 @@ def login():
 @app.route('/logout')
 def logout():
     session.pop('username', None)
+    session.pop('user_id', None)
     return redirect(url_for('main_page'))
 
 
@@ -339,8 +342,9 @@ def approve(answer_id):
 
 
 @app.route('/user/<user_id>')
-def user_page(user_Id):
-    pass
+def user_page(user_id):
+
+    return render_template('user-page.html', user_id=user_id)
 
 
 if __name__ == "__main__":

@@ -519,3 +519,8 @@ def update_reputation(cursor: RealDictCursor, gained_points: int, user_id: int):
         SET reputation = reputation + %(gained_points)s
         WHERE id = %(user_id)s"""
     cursor.execute(query, {'gained_points': gained_points, 'user_id': user_id})
+
+
+@database_common.connection_handler
+def get_user_page_data(cursor: RealDictCursor, user_id: int) -> list:
+    pass

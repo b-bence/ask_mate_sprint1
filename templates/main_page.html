@@ -55,7 +55,7 @@
     <div id="footer">
         <button> <a class="links" href={{ url_for('list') }}>Go to question page</a><br></button>
         {% if logged_in %}
-            <button> <a class="links" href={{ url_for('user_page', user_id=1) }}>User page</a><br></button>
+            <button> <a class="links" href={{ url_for('user_page', user_id=user_id) }}>User page</a><br></button>
             <button> <a class="links" href={{ url_for('logout') }}>Logout</a><br></button>
         {% else %}
             <button> <a class="links" href={{ url_for('registration') }}>Create new account</a><br></button>
