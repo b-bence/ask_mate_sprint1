@@ -572,15 +572,22 @@ def list_user_data(cursor:RealDictCursor, user_id=False):
 def get_user_activities(cursor:RealDictCursor, user_id: int) -> list:
     id = {'user_id': user_id}
     question_query = """
-        SELECT title AS question
+        SELECT title AS question, id AS question_id
         FROM question
         WHERE question.user_id = %(user_id)s"""
     answer_query = """
-        SELECT message AS answer
+        SELECT message AS answer, question_id
         FROM answer
         WHERE answer.user_id = %(user_id)s"""
     comment_query = """
-        SELECT message AS comment
+        SELECT message AS comment,
+        CASE
+            WHEN question_id IS NULL THEN
+                (SELECT question_id
+                FROM answer
+                WHERE id = comment.answer_id)
+            WHEN answer_id IS NULL THEN question_id
+        END AS question_id
         FROM comment
         WHERE comment.user_id = %(user_id)s"""
     cursor.execute(question_query, id)

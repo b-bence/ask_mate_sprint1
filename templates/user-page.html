@@ -2,9 +2,14 @@
     {% if questions != [] %}
         <h2 align="center">My questions</h2>
         <table cellpadding="10" align="center">
+            <tr>
+                <th>Question</th>
+                <th>Link</th>
+            </tr>
             {% for question in questions %}
                 <tr>
                     <td>{{ question.question }}</td>
+                    <td><a href="{{ url_for('id', question_id=question.question_id) }}">go to the question</a></td>
                 </tr>
             {% endfor %}
         </table>
@@ -12,9 +17,14 @@
     {% if answers != [] %}
         <h2 align="center">My answers</h2>
         <table cellpadding="10" align="center">
+            <tr>
+                <th>Answer</th>
+                <th>Link</th>
+            </tr>
             {% for answer in answers %}
                 <tr>
                     <td>{{ answer.answer }}</td>
+                    <td><a href="{{ url_for('id', question_id=answer.question_id) }}">go to the question</a></td>
                 </tr>
             {% endfor %}
         </table>
@@ -22,9 +32,14 @@
     {% if comments != [] %}
         <h2 align="center">My comments</h2>
         <table cellpadding="10" align="center">
+            <tr>
+                <th>Comment</th>
+                <th>Link</th>
+            </tr>
             {% for comment in comments %}
                 <tr>
                     <td>{{ comment.comment }}</td>
+                    <td><a href="{{ url_for('id', question_id=comment.question_id) }}">go to the question</a></td>
                 </tr>
             {% endfor %}
         </table>
