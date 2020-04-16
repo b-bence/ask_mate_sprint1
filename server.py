@@ -6,6 +6,7 @@ app = Flask(__name__)
 APP_ROUTE = os.path.dirname(os.path.abspath(__file__))
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
+
 @app.route("/")
 def main_page():
     questions = data_handler.get_latest_questions()
@@ -297,6 +298,9 @@ def registration():
 
     if request.method == 'POST':
         email = request.form['email']
+        if any(user['email'] for user in data_handler.get_emails()):
+            error_message = 'Someone already registered with this email: '
+            return render_template('registration.html', title_text=title_text, email=email, error_message=error_message)
         password = request.form['password']
         hashed_password = data_handler.hash_password(password)
         registration_date = data_handler.current_time()
@@ -345,6 +349,18 @@ def approve(answer_id):
 def user_page(user_id):
 
     return render_template('user-page.html', user_id=user_id)
+
+
+@app.route('/tags')
+def tags():
+    tag_occurence = data_handler.tag_occurence()
+    return render_template('tags.html', tag_occurence=tag_occurence)
+
+
+@app.route('/users')
+def users():
+    user_data = data_handler.list_user_data()
+    return render_template('users.html', user_data=user_data)
 
 
 if __name__ == "__main__":

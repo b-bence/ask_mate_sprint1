@@ -524,3 +524,53 @@ def update_reputation(cursor: RealDictCursor, gained_points: int, user_id: int):
 @database_common.connection_handler
 def get_user_page_data(cursor: RealDictCursor, user_id: int) -> list:
     pass
+
+
+@database_common.connection_handler
+def tag_occurence(cursor: RealDictCursor):
+    query = """
+        SELECT 
+            tag.name as tag_name,
+            COUNT(question_tag.question_id) as occurence
+        FROM tag
+        JOIN question_tag
+        ON tag.id = question_tag.tag_id
+        GROUP BY tag_name;
+    """
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def list_user_data(cursor:RealDictCursor):
+    query = """
+        SELECT 
+            users.id,
+            users.email,
+            users.registration_date,
+            COUNT(question.id) as asked_questions,
+            COUNT(distinct answer.id) as answer,
+	        COUNT(distinct comment.id) as comment,
+            users.reputation
+        FROM users
+        LEFT JOIN question
+            ON users.id = question.user_id
+        LEFT JOIN answer
+            ON users.id = answer.user_id
+        LEFT JOIN comment
+            ON users.id = comment.user_id
+        GROUP BY users.id;
+    """
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_emails(cursor:RealDictCursor):
+    query = """
+        SELECT users.email
+        FROM users;
+    """
+    cursor.execute(query)
+    return cursor.fetchall()
+
