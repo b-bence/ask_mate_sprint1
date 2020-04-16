@@ -100,15 +100,17 @@ def id(question_id):
     answers = data_handler.get_answers(question_id)
     question_data = data_handler.get_single_question(question_id)
     comments = data_handler.get_comments()
-    current_user = session['username']
-    if request.method == 'GET':
-        new_view_number = data_handler.get_views(question_id) + 1
-        data_handler.update_question_view_number(new_view_number, question_id)
 
     if 'username' in session:
         logged_in = True
+        current_user = session['username']
     else:
         logged_in = False
+        current_user = None
+
+    if request.method == 'GET':
+        new_view_number = data_handler.get_views(question_id) + 1
+        data_handler.update_question_view_number(new_view_number, question_id)
 
     return render_template('display_question.html', question_id=question_id, question_data=question_data,
                            answer_data=answers, question_tags=question_tags, comments=comments,

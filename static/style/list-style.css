@@ -1,5 +1,6 @@
 body {
     background-color: white;
+    margin: 50px 10%;
 }
 
 h1, h3, #question_answer {
@@ -90,10 +91,16 @@ button{
     border: none;
     line-height: 36px;
 }
+
 button a{
     text-decoration: none;
     color: #fff;
 }
+
+button a, button:hover{
+    cursor: pointer;
+}
+
 
 table {
     background-color: #f3f4f5;
@@ -142,4 +149,15 @@ tr {
 
 .upload{
     margin-left: 90px;
+}
+
+#logout, #login, #registration {
+    float: right;
+    margin-right: 5px;
+}
+
+#main-page{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }

@@ -45,6 +45,11 @@ button, input{
     border-color: #cbfafa;
 }
 
+button, input:hover{
+    cursor: pointer;
+}
+
+
 #comment{
     float: right;
 }
