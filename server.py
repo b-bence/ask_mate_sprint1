@@ -349,9 +349,12 @@ def approve(answer_id):
 
 @app.route('/user/<user_id>')
 def user_page(user_id):
-    user_data = data_handler.list_user_data(user_id)
-    questions, answers, comments = data_handler.get_user_activities(user_id)
-    return render_template('users.html', user_data=user_data, questions=questions, answers=answers, comments=comments)
+    if 'user_id' in session:
+        user_data = data_handler.list_user_data(user_id)
+        questions, answers, comments = data_handler.get_user_activities(user_id)
+        return render_template('users.html', user_data=user_data, questions=questions, answers=answers, comments=comments, title='User Profile')
+    else:
+        return redirect('/')
 
 
 @app.route('/tags')
@@ -363,7 +366,7 @@ def tags():
 @app.route('/users')
 def users():
     user_data = data_handler.list_user_data()
-    return render_template('users.html', user_data=user_data)
+    return render_template('users.html', user_data=user_data, title='Users')
 
 
 if __name__ == "__main__":

@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>{{ title }}</title>
     <link rel="stylesheet" type="text/css" href={{ url_for('static', filename='style/list-style.css')}}>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-    <h1>Users</h1>
+    <h1>{{ title }}</h1>
     <table cellpadding="10" align="center">
         <tr>
             <th>User ID</th>
@@ -22,7 +22,7 @@
         {% for user in user_data %}
             <tr>
                 <td>{{ user.id }}</td>
-                <td>{{ user.email }}</td>
+                <td><a href="{{ url_for('user_page', user_id=user.id) }}">{{ user.email }}</a></td>
                 <td>{{ user.registration_date }}</td>
                 <td>{{ user.asked_questions }}</td>
                 <td>{{ user.answer }}</td>
