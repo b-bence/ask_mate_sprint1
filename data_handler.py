@@ -255,7 +255,10 @@ def delete_answer(cursor: RealDictCursor, answer_id: int):
 def delete_question(cursor: RealDictCursor, question_id: int):
     answers = get_answers(question_id)
     for answer in answers:
+        filename = answer['image']
+        delete_image(filename)
         delete_answer_comments(answer['id'])
+
     filename_query = """
         SELECT image
         FROM question
