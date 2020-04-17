@@ -631,6 +631,20 @@ def get_emails(cursor:RealDictCursor):
     return cursor.fetchall()
 
 
+@database_common.connection_handler
+def check_email(cursor:RealDictCursor, email: str):
+    query = """
+        SELECT users.email
+        FROM users
+        WHERE email = %(email)s;
+    """
+    cursor.execute(query, {'email': email})
+    result = cursor.fetchall()
+    if result != []:
+        [res] = result
+        return res['email']
+
+
 def delete_image(filename):
     path = f'static/{filename}'
     if os.path.exists(path):

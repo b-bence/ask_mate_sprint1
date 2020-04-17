@@ -308,7 +308,8 @@ def registration():
 
     if request.method == 'POST':
         email = request.form['email']
-        if any(user['email'] for user in data_handler.get_emails()):
+        check_email = data_handler.check_email(email)
+        if email == check_email:
             error_message = 'Someone already registered with this email: '
             return render_template('registration.html', title_text=title_text, email=email, error_message=error_message)
         password = request.form['password']

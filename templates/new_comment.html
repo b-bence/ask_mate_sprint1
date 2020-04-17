@@ -9,15 +9,17 @@
 <body>
     <h1>{{ title }}</h1>
      <div class="short_form">
-    <form action="{{ action }}" method="post">
-        <label for="new_comment"> Add new comment <br>
-            <textarea id='new_comment' name="comment" rows="5" cols="30">{{ input_value }}</textarea>
-        </label><br>
-{#        <input type="text" name="comment" value="{{ input_value }}">#}
+        <form action="{{ action }}" method="post">
+            <label for="new_comment"> Add new comment <br>
+                <textarea id='new_comment' name="comment" rows="5" cols="30">{{ input_value }}</textarea>
+            </label><br>
+    {#        <input type="text" name="comment" value="{{ input_value }}">#}
 
-        <button id='ok' type="submit">Ok</button>
-    </form>
-         </div>
-<button class="links"> <a href={{ url_for('main_page') }}>Return to main page</a><br></button>
+            <button id='ok' type="submit">Ok</button>
+        </form>
+     </div>
+    <p style="text-align: center">
+        <button class="links"> <a href={{ url_for('main_page') }}>Return to main page</a><br></button>
+    </p>
 </body>
 </html>
