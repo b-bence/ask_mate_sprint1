@@ -234,10 +234,20 @@ def sort_by(header, direction):
 
 @database_common.connection_handler
 def delete_answer(cursor: RealDictCursor, answer_id: int):
+    filename_query = """
+        SELECT image
+        FROM answer
+        WHERE id = %(answer_id)s"""
+
     sql = """
         DELETE FROM answer
         WHERE id = %(answer_id)s;
     """
+    cursor.execute(filename_query, {'answer_id': answer_id})
+    [temp_result] = cursor.fetchall()
+    filename = temp_result['image']
+    delete_image(filename)
+
     cursor.execute(sql, {'answer_id': answer_id})
 
 
