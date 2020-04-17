@@ -305,12 +305,12 @@ def fancy_search(cursor: RealDictCursor, input):
 
 
 @database_common.connection_handler
-def update_question(cursor: RealDictCursor, title: str, message: str, question_id: int):
+def update_question(cursor: RealDictCursor, title: str, message: str, question_id: int, image: str):
     query = """
         UPDATE question
-        SET title = %(title)s, message = %(message)s
+        SET title = %(title)s, message = %(message)s, image = %(image)s
         WHERE id = %(question_id)s"""
-    cursor.execute(query, {'title': title, 'message': message, 'question_id': question_id})
+    cursor.execute(query, {'title': title, 'message': message, 'question_id': question_id, 'image': image})
 
 
 @database_common.connection_handler

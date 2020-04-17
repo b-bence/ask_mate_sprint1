@@ -84,7 +84,14 @@ def edit(question_id):
     if request.method == 'POST':
         title = request.form['title'].capitalize()
         message = request.form['message'].capitalize()
-        data_handler.update_question(title, message, question_id)
+        image = request.files['image']
+        filename = question['image']
+        if str(image) != "<FileStorage: '' ('application/octet-stream')>":
+            data_handler.delete_image(filename)
+            target = os.path.join(APP_ROUTE, 'static/')
+            image.save("/".join([target, filename]))
+
+        data_handler.update_question(title, message, question_id, filename)
 
         new_view_number = data_handler.get_views(question_id) + 1
         data_handler.update_question_view_number(new_view_number, question_id)
