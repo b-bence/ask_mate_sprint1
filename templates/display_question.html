@@ -99,9 +99,9 @@
                 {% else %}
                     {% if answer.user_email == current_user %}
                         <td><b>Not accepted yet - <a href={{ url_for('approve', answer_id = answer.id) }}>click here to accept</a></b></td>
-                        <form action="/answer/{{answer.id}}/vote_up">
-                            <td><button class='icon' type='submit' class="search_icon"></button></td>
-                        </form>
+{#                        <form action="/answer/{{answer.id}}/vote_up">#}
+{#                            <td><button class='icon' type='submit' class="search_icon"></button></td>#}
+{#                        </form>#}
                     {% else %}
                         <td><b>Not accepted yet</b></td>
                     {% endif %}
